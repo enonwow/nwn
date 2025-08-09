@@ -299,7 +299,13 @@ void DressingRoomCreateCopy(object oPC)
 
     location lSpawnLocation = GetLocation(oWP);
 
-    object oPCopy = CopyObject(oPC, lSpawnLocation);
+    object oPCopy = CopyObject(
+        oPC, 
+        lSpawnLocation,
+        OBJECT_INVALID,
+        "",
+        TRUE);
+
     SetObjectVisibleDistance(oPCopy, 200.0);
 
     DelayCommand(0.5, AttachCamera(oPC, oPCopy, TRUE));
