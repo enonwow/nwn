@@ -299,12 +299,9 @@ void DressingRoomCreateCopy(object oPC)
 
     location lSpawnLocation = GetLocation(oWP);
 
-    object oPCopy = CopyObject(
-        oPC, 
-        lSpawnLocation,
-        OBJECT_INVALID,
-        "",
-        TRUE);
+    json jsonPC = ObjectToJson(oPC);
+    jsonPC = JsonObjectSet(jsonPC, "ItemList", JsonObjectSet(JsonObjectGet(jsonPC, "ItemList"), "value", JsonArray()));
+    object oPCopy = JsonToObject(jsonPC, lSpawnLocation, OBJECT_INVALID, TRUE);
 
     SetObjectVisibleDistance(oPCopy, 200.0);
 
