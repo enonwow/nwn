@@ -299,7 +299,7 @@ void DressingRoomCreateCopy(object oPC)
 
     location lSpawnLocation = GetLocation(oWP);
 
-    json jsonPC = ObjectToJson(oPC);
+    json jsonPC = ObjectToJson(oPC, TRUE);
     jsonPC = JsonObjectSet(jsonPC, "ItemList", JsonObjectSet(JsonObjectGet(jsonPC, "ItemList"), "value", JsonArray()));
     object oPCopy = JsonToObject(jsonPC, lSpawnLocation, OBJECT_INVALID, TRUE);
 
