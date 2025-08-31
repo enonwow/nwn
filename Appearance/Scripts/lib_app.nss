@@ -311,7 +311,7 @@ void DressingRoomCreateCopy(object oPC)
     jsonPC = JsonObjectSet(jsonPC, "ItemList", JsonObjectSet(JsonObjectGet(jsonPC, "ItemList"), "value", JsonArray()));
 
     //Set the UMD value to the PC copy
-    json jPatch = JsonParse("[{ \"op\": \"replace\", \"path\": \"/SkillList/value/19/Rank/value\", \"value\": "+IntToString(TEMPORARY_UMD_VALUE_INCREASE)+" }]");
+    json jPatch = JsonParse("[{ \"op\": \"replace\", \"path\": \"/SkillList/value/"+IntToString(SKILL_USE_MAGIC_DEVICE)+"/Rank/value\", \"value\": "+IntToString(TEMPORARY_UMD_VALUE_INCREASE)+" }]");
     jsonPC = JsonPatch(jsonPC, jPatch);
 
     object oPCopy = JsonToObject(jsonPC, lSpawnLocation, OBJECT_INVALID, TRUE);
