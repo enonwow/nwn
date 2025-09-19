@@ -1,6 +1,12 @@
 #include "lib_nui"
 
 const string APP_UNEQUIPED_ITEMS = "APP_UNEQUIPED_ITEMS";
+const int TEMPORARY_UMD_VALUE_INCREASE = 120;
+
+void AddTemporaryMaxUMD(object oTarget){
+    effect umd = EffectSkillIncrease(SKILL_USE_MAGIC_DEVICE, TEMPORARY_UMD_VALUE_INCREASE);
+    ApplyEffectToObject(DURATION_TYPE_TEMPORARY, umd, oTarget, 2.0f);
+}
 
 string GetRaceLetter(object oPC)
 {
@@ -72,6 +78,7 @@ void WearItems(
 
             if(GetIsObjectValid(oItem))
             {
+                AddTemporaryMaxUMD(oPCopy);
                 AssignCommand(oPCopy, ActionEquipItem(oItem, StringToInt(sSlot)));
             }
         }
@@ -109,6 +116,7 @@ void UnequipHelmet(
 
             if(GetIsObjectValid(oItem))
             {
+                AddTemporaryMaxUMD(oPCopy);
                 AssignCommand(oPCopy, ActionEquipItem(oItem, StringToInt(sSlot)));
                 JsonObjectDelInplace(jItemToEquip, sSlot);
             }
@@ -301,6 +309,11 @@ void DressingRoomCreateCopy(object oPC)
 
     json jsonPC = ObjectToJson(oPC, TRUE);
     jsonPC = JsonObjectSet(jsonPC, "ItemList", JsonObjectSet(JsonObjectGet(jsonPC, "ItemList"), "value", JsonArray()));
+
+    //Set the UMD value to the PC copy
+    json jPatch = JsonParse("[{ \"op\": \"replace\", \"path\": \"/SkillList/value/"+IntToString(SKILL_USE_MAGIC_DEVICE)+"/Rank/value\", \"value\": "+IntToString(TEMPORARY_UMD_VALUE_INCREASE)+" }]");
+    jsonPC = JsonPatch(jsonPC, jPatch);
+
     object oPCopy = JsonToObject(jsonPC, lSpawnLocation, OBJECT_INVALID, TRUE);
 
     SetObjectVisibleDistance(oPCopy, 200.0);
@@ -1227,6 +1240,7 @@ void KeepItemInLeftHand(object oPC)
 
     if(GetIsObjectValid(oItem))
     {
+        AddTemporaryMaxUMD(oPC);
         AssignCommand(oPC, ActionEquipItem(oItem, INVENTORY_SLOT_LEFTHAND));
     }
 
@@ -1243,6 +1257,7 @@ void CopyItemToSlot(
 
     object oNewItem = CopyItem(oItemToCopy, oTarget, TRUE);
 
+    AddTemporaryMaxUMD(oTarget);
     AssignCommand(oTarget, ActionEquipItem(oNewItem, nSlot));
 }
 
@@ -1260,6 +1275,7 @@ void CreateNewItem(
 
     if(GetIsObjectValid(oNewItem))
     {
+        AddTemporaryMaxUMD(oPC);
         AssignCommand(oPC, ActionEquipItem(oNewItem, nSlot));
         DestroyObject(oItem);
     }
