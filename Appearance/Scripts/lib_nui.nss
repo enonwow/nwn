@@ -576,3 +576,16 @@ void ModalWindowInfoSaveObjects(object oPC, json jObjects)
 
     NuiSetBind(oPC, nToken, NUI_INFO_MODAL_OBJECTS, jObjects);
 }
+
+float GetNuiScaleDimension(
+    object oPC,
+    float fDemension,    
+    float fScaleMax = 1.5)
+{
+    int nScaleGui = GetPlayerDeviceProperty(oPC, PLAYER_DEVICE_PROPERTY_GUI_SCALE);
+    float fScaleGui = nScaleGui / 100.0;
+
+    fScaleGui = fScaleGui > fScaleMax ? fScaleMax : fScaleGui;
+
+    return (fDemension / fScaleGui);
+}

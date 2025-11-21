@@ -45,20 +45,20 @@ void FeedAppShieldWindow(
 
 void CreateAppShieldWindow(object oPC)
 {
-    struct ModelInfo ModelInfo = 
+    struct ModelInfo ModelInfo =
         GetModelInfo(
-            GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oPC), 
+            GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oPC),
             RESTYPE_TGA);
 
     json jSpacer = NuiSpacer();
 
     json jCol = JsonArray();
     jCol = JsonArrayInsert(jCol, CreateAppColorTemplateTopSpacer(60.0));
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName("Shield"));
-    jCol = JsonArrayInsert(jCol, CreateAppItemPrviews(ModelInfo));
-    jCol = JsonArrayInsert(jCol, CreateAppItemPicker());
-    jCol = JsonArrayInsert(jCol, NuiHeight(jSpacer, 10.0));
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateButtonPanel());
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName(oPC, "Shield"));
+    jCol = JsonArrayInsert(jCol, CreateAppItemPrviews(oPC, ModelInfo));
+    jCol = JsonArrayInsert(jCol, CreateAppItemPicker(oPC));
+    jCol = JsonArrayInsert(jCol, NuiHeight(jSpacer, GetNuiScaleDimension(oPC, 10.0)));
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateButtonPanel(oPC));
     jCol = JsonArrayInsert(jCol, jSpacer);
 
     json jImageList = JsonArray();
@@ -68,8 +68,8 @@ void CreateAppShieldWindow(object oPC)
         NuiRect(
             0.0,
             15.0,
-            APP_BACKGROUND_IMAGE_WIDTH,
-            500.0),
+            GetNuiScaleDimension(oPC, APP_BACKGROUND_IMAGE_WIDTH),
+            GetNuiScaleDimension(oPC, 515.0)),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
@@ -106,7 +106,7 @@ void CreateAppShieldWindow(object oPC)
 }
 
 void AppShieldCopy(
-    object oSource, 
+    object oSource,
     object oTarget)
 {
     object oShield = GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oSource);
@@ -160,7 +160,7 @@ void AppShieldEvents(
 
             int nTokenPanel = NuiFindWindow(oPC, APP_RIGHT_PANEL_WINDOW);
             AppRightPanelOffEncouraged(oPC, nTokenPanel);
-        }  
+        }
     }
     else if(sEventType == EVENT_TYPE_WATCH)
     {

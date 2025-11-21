@@ -766,8 +766,8 @@ void AppCreateGeometryWindow(object oPC, float fRightPanelX)
     json jGeometry = NuiRect(
         fRightPanelX - APP_BACKGROUND_IMAGE_WIDTH + 3.0,
         0.0,
-        fWindowWidth,
-        fWindowHeight);
+        GetNuiScaleDimension(oPC, fWindowWidth),
+        GetNuiScaleDimension(oPC, fWindowHeight));
 
     AppSetGeometryWindow(oPC, jGeometry);
 }
@@ -866,15 +866,18 @@ string AppGetColorPickerButtonEncouragedBind(int nId)
     return AppGetColorPickerButtonBind(nId) + APP_COLOR_BTN_ENCOURAGED;
 }
 
-json AppCreateColorPickerButton(int nId, string sTooltip)
+json AppCreateColorPickerButton(
+    object oPC,
+    int nId,
+    string sTooltip)
 {
     string sBind = AppGetColorPickerButtonBind(nId);
 
     json jColorBtn = NuiButtonImage(NuiBind(sBind));
     jColorBtn = NuiId(jColorBtn, sBind);
     jColorBtn = NuiTooltip(jColorBtn, JsonString(sTooltip));
-    jColorBtn = NuiWidth(jColorBtn, 40.0);
-    jColorBtn = NuiHeight(jColorBtn, 40.0);
+    jColorBtn = NuiWidth(jColorBtn, GetNuiScaleDimension(oPC, 40.0));
+    jColorBtn = NuiHeight(jColorBtn, GetNuiScaleDimension(oPC, 40.0));
     jColorBtn = NuiEncouraged(jColorBtn,
         NuiBind(AppGetColorPickerButtonEncouragedBind(nId)));
     jColorBtn = AppSetForegroundColor(jColorBtn);
@@ -936,13 +939,13 @@ json CreateAppColorTemplateTopSpacer(float fHeight)
     return NuiRow(jRow);
 }
 
-json CreateAppColorTemplateLabelName(string sWindowNameLabel)
+json CreateAppColorTemplateLabelName(object oPC, string sWindowNameLabel)
 {
     json jLabel = NuiLabel(
         JsonString(sWindowNameLabel),
         JsonInt(NUI_HALIGN_CENTER),
         JsonInt(NUI_VALIGN_MIDDLE));
-    jLabel = NuiHeight(jLabel, 30.0);
+    jLabel = NuiHeight(jLabel, GetNuiScaleDimension(oPC, 30.0));
     jLabel = AppSetForegroundColor(jLabel);
 
     json jRow = JsonArray();
@@ -968,12 +971,18 @@ json AppDispatchElements(
     return jCol;
 }
 
-json CreateAppColorTemplateColorPicker()
+json CreateAppColorTemplateColorPicker(object oPC)
 {
     json jColorCol = JsonArray();
 
     float fHeight;
     int i,j;
+
+    float fScaleGui = GetPlayerDeviceProperty(oPC, PLAYER_DEVICE_PROPERTY_GUI_SCALE) / 100.0;
+    float fButtonSpace = 11 * fScaleGui;
+
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_COLOR_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_COLOR_BTN_HEIGHT);
 
     for(i = 0; i < APP_MAX_COLUMNS; i++)
     {
@@ -989,8 +998,8 @@ json CreateAppColorTemplateColorPicker()
             jButton = NuiId(jButton, sBtnId);
             jButton = NuiTooltip(jButton, JsonString(sId));
             jButton = NuiEncouraged(jButton, NuiBind(sBtnId));
-            jButton = NuiWidth(jButton, APP_COLOR_BTN_WIDTH);
-            jButton = NuiHeight(jButton, APP_COLOR_BTN_HEIGHT);
+            jButton = NuiWidth(jButton, fButtonWidthScaled);
+            jButton = NuiHeight(jButton, fButtonHeightScaled);
             jButton = AppSetForegroundColor(jButton);
 
             jColorRow = JsonArrayInsert(jColorRow, jButton);
@@ -998,31 +1007,36 @@ json CreateAppColorTemplateColorPicker()
 
         jColorCol = JsonArrayInsert(jColorCol, NuiRow(jColorRow));
 
-        fHeight += APP_COLOR_BTN_HEIGHT + 9;
+        fHeight += fButtonHeightScaled + fButtonSpace;
     }
 
     json jSpacer = NuiSpacer();
 
     json jElements = JsonArray();
-    jElements = JsonArrayInsert(jElements, NuiWidth(jSpacer, APP_LEFT_SPACER_WIDTH));
+    jElements = JsonArrayInsert(jElements,
+        NuiWidth(jSpacer, GetNuiScaleDimension(oPC, APP_LEFT_SPACER_WIDTH)));
+
     jElements = JsonArrayInsert(jElements, NuiCol(jColorCol));
     jElements = JsonArrayInsert(jElements, jSpacer);
 
     json jGroup = NuiGroup(NuiRow(jElements), FALSE, NUI_SCROLLBARS_NONE);
-    jGroup = NuiHeight(jGroup, fHeight);
+    jGroup = NuiHeight(jGroup, GetNuiScaleDimension(oPC, fHeight));
 
     return jGroup;
 }
 
-json CreateAppColorTemplateColorChooser()
+json CreateAppColorTemplateColorChooser(object oPC)
 {
     json jSpacer = NuiSpacer();
+
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
 
     json jLeftBtn = NuiButtonImage(JsonString(APP_ARROW_PREV_BTN));
     jLeftBtn = NuiId(jLeftBtn, APP_PREV_COLOR_BTN);
     jLeftBtn = NuiTooltip(jLeftBtn, JsonString("Previous color"));
-    jLeftBtn = NuiWidth(jLeftBtn, APP_BTN_WIDTH);
-    jLeftBtn = NuiHeight(jLeftBtn, APP_BTN_HEIGHT);
+    jLeftBtn = NuiWidth(jLeftBtn, fButtonWidthScaled);
+    jLeftBtn = NuiHeight(jLeftBtn, fButtonHeightScaled);
 
     json jTextEdit = NuiTextEdit(
         JsonString(""),
@@ -1031,14 +1045,14 @@ json CreateAppColorTemplateColorChooser()
         FALSE);
     jTextEdit = NuiTooltip(jTextEdit, JsonString("Color"));
     jTextEdit = AppSetForegroundColor(jTextEdit);
-    jTextEdit = NuiWidth(jTextEdit, APP_BTN_WIDTH);
-    jTextEdit = NuiHeight(jTextEdit, APP_BTN_HEIGHT);
+    jTextEdit = NuiWidth(jTextEdit, fButtonWidthScaled);
+    jTextEdit = NuiHeight(jTextEdit, fButtonHeightScaled);
 
     json jRightBtn = NuiButtonImage(JsonString(APP_ARROW_NEXT_BTN));
     jRightBtn = NuiId(jRightBtn, APP_NEXT_COLOR_BTN);
     jRightBtn = NuiTooltip(jRightBtn, JsonString("Next color"));
-    jRightBtn = NuiWidth(jRightBtn, APP_BTN_WIDTH);
-    jRightBtn = NuiHeight(jRightBtn, APP_BTN_HEIGHT);
+    jRightBtn = NuiWidth(jRightBtn, fButtonWidthScaled);
+    jRightBtn = NuiHeight(jRightBtn, fButtonHeightScaled);
 
     json jRow = JsonArray();
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -1050,31 +1064,32 @@ json CreateAppColorTemplateColorChooser()
     return NuiRow(jRow);
 }
 
-json CreateAppColorTemplateButtonPanel()
+json CreateAppColorTemplateButtonPanel(object oPC)
 {
     json jSpacer = NuiSpacer();
+
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BOTTOM_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BOTTOM_BTN_HEIGHT);
 
     json jRandomizeBtn = NuiButtonImage(JsonString("app_roll"));
     jRandomizeBtn = NuiTooltip(jRandomizeBtn, JsonString("Randomize"));
     jRandomizeBtn = NuiId(jRandomizeBtn, APP_RANDOMIZE_BTN);
-    jRandomizeBtn = NuiWidth(jRandomizeBtn, APP_BOTTOM_BTN_WIDTH);
-    jRandomizeBtn = NuiHeight(jRandomizeBtn, APP_BOTTOM_BTN_HEIGHT);
+    jRandomizeBtn = NuiWidth(jRandomizeBtn, fButtonWidthScaled);
+    jRandomizeBtn = NuiHeight(jRandomizeBtn, fButtonHeightScaled);
 
     json jConfirmBtn = NuiButtonImage(JsonString("app_confirm"));
     jConfirmBtn = NuiTooltip(jConfirmBtn, JsonString("Confirm"));
     jConfirmBtn = NuiId(jConfirmBtn, APP_CONFIRM_BTN);
-    jConfirmBtn = NuiWidth(jConfirmBtn, APP_BOTTOM_BTN_WIDTH);
-    jConfirmBtn = NuiHeight(jConfirmBtn, APP_BOTTOM_BTN_HEIGHT);
+    jConfirmBtn = NuiWidth(jConfirmBtn, fButtonWidthScaled);
+    jConfirmBtn = NuiHeight(jConfirmBtn, fButtonHeightScaled);
 
     json jCancelBtn = NuiButtonImage(JsonString("custom_close_nui"));
     jCancelBtn = NuiTooltip(jCancelBtn, JsonString("Cancel"));
     jCancelBtn = NuiId(jCancelBtn, APP_CANCEL_BTN);
-    jCancelBtn = NuiWidth(jCancelBtn, APP_BOTTOM_BTN_WIDTH);
-    jCancelBtn = NuiHeight(jCancelBtn, APP_BOTTOM_BTN_HEIGHT);
+    jCancelBtn = NuiWidth(jCancelBtn, fButtonWidthScaled);
+    jCancelBtn = NuiHeight(jCancelBtn, fButtonHeightScaled);
 
     json jRow = JsonArray();
-    // jRow = JsonArrayInsert(jRow, jSpacer);
-    // jRow = JsonArrayInsert(jRow, jRandomizeBtn);
     jRow = JsonArrayInsert(jRow, jSpacer);
     jRow = JsonArrayInsert(jRow, jConfirmBtn);
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -1100,17 +1115,20 @@ int AppColorTemplateWindow(
     json jCol = JsonArray();
     json jRow = JsonArray();
 
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateTopSpacer(fTopSpacerHeight));
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName(sWindowNameLabel));
+    jCol = JsonArrayInsert(jCol,
+        CreateAppColorTemplateTopSpacer(GetNuiScaleDimension(oPC, fTopSpacerHeight)));
+
+    jCol = JsonArrayInsert(jCol,
+        CreateAppColorTemplateLabelName(oPC, sWindowNameLabel));
 
     jCol = AppDispatchElements(jPrevElements, jCol);
 
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateColorPicker());
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateColorChooser());
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateColorPicker(oPC));
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateColorChooser(oPC));
 
     jCol = AppDispatchElements(jNextElements, jCol);
 
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateButtonPanel());
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateButtonPanel(oPC));
 
     jRow = JsonArray();
     {
@@ -1127,8 +1145,8 @@ int AppColorTemplateWindow(
         NuiRect(
             0.0,
             15.0,
-            APP_BACKGROUND_IMAGE_WIDTH,
-            fWindowHeight),
+            GetNuiScaleDimension(oPC, APP_BACKGROUND_IMAGE_WIDTH),
+            GetNuiScaleDimension(oPC, fWindowHeight)),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
@@ -1291,28 +1309,28 @@ void CreateNewItem(
     }
 }
 
-json CreateAppColorPicker()
+json CreateAppColorPicker(object oPC)
 {
     json jSpacer = NuiSpacer();
     json jRow = JsonArray();
 
     json jFirstLeatherBtn = AppCreateColorPickerButton(
-        ITEM_APPR_ARMOR_COLOR_LEATHER1, "Leather color 1");
+        oPC, ITEM_APPR_ARMOR_COLOR_LEATHER1, "Leather color 1");
 
     json jSecondLeatherBtn = AppCreateColorPickerButton(
-        ITEM_APPR_ARMOR_COLOR_LEATHER2, "Leather color 2");
+        oPC, ITEM_APPR_ARMOR_COLOR_LEATHER2, "Leather color 2");
 
     json jFirstClothBtn = AppCreateColorPickerButton(
-        ITEM_APPR_ARMOR_COLOR_CLOTH1, "Cloth color 1");
+        oPC, ITEM_APPR_ARMOR_COLOR_CLOTH1, "Cloth color 1");
 
     json jSecondClothBtn = AppCreateColorPickerButton(
-        ITEM_APPR_ARMOR_COLOR_CLOTH2, "Cloth color 2");
+        oPC, ITEM_APPR_ARMOR_COLOR_CLOTH2, "Cloth color 2");
 
     json jFirstMetalBtn = AppCreateColorPickerButton(
-        ITEM_APPR_ARMOR_COLOR_METAL1, "Metal color 1");
+        oPC, ITEM_APPR_ARMOR_COLOR_METAL1, "Metal color 1");
 
     json jSecondMetalBtn = AppCreateColorPickerButton(
-        ITEM_APPR_ARMOR_COLOR_METAL2, "Metal color 2");
+        oPC, ITEM_APPR_ARMOR_COLOR_METAL2, "Metal color 2");
 
     jRow = JsonArrayInsert(jRow, jSpacer);
     jRow = JsonArrayInsert(jRow, jFirstLeatherBtn);
@@ -1463,28 +1481,32 @@ int AppComboValidate(
 }
 
 json CreateAppItemPicker(
+    object oPC,
     string sPreviousTooltip = "Previous element",
     string sNextTooltip = "Next element")
 {
     json jSpacer = NuiSpacer();
     json jRow = JsonArray();
 
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
+
     json jButtonPrevious = NuiButtonImage(JsonString(APP_ARROW_PREV_BTN));
     jButtonPrevious = NuiId(jButtonPrevious, APP_ITEM_PREVIOUS_BTN);
-    jButtonPrevious = NuiWidth(jButtonPrevious, APP_BTN_WIDTH);
-    jButtonPrevious = NuiHeight(jButtonPrevious, APP_BTN_HEIGHT);
+    jButtonPrevious = NuiWidth(jButtonPrevious, fButtonWidthScaled);
+    jButtonPrevious = NuiHeight(jButtonPrevious, fButtonHeightScaled);
     jButtonPrevious = NuiTooltip(jButtonPrevious, JsonString(sPreviousTooltip));
     jButtonPrevious = AppSetForegroundColor(jButtonPrevious);
 
     json jCombo = NuiCombo(
         NuiBind(APP_ITEM_ENTRIES),
         NuiBind(APP_ITEM_ID));
-    jCombo = NuiHeight(jCombo, APP_BTN_HEIGHT);
+    jCombo = NuiHeight(jCombo, fButtonHeightScaled);
 
     json jButtonNext = NuiButtonImage(JsonString(APP_ARROW_NEXT_BTN));
     jButtonNext = NuiId(jButtonNext, APP_ITEM_NEXT_BTN);
-    jButtonNext = NuiWidth(jButtonNext, APP_BTN_WIDTH);
-    jButtonNext = NuiHeight(jButtonNext, APP_BTN_HEIGHT);
+    jButtonNext = NuiWidth(jButtonNext, fButtonWidthScaled);
+    jButtonNext = NuiHeight(jButtonNext, fButtonHeightScaled);
     jButtonNext = NuiTooltip(jButtonNext, JsonString(sNextTooltip));
     jButtonNext = AppSetForegroundColor(jButtonNext);
 
@@ -1502,13 +1524,13 @@ string GetItemIconKeyByModelInfo(struct ModelInfo ModelInfo, int nId)
     return ModelInfo.sKeyPrefix + IntToPaddedString(nId, 3) + ModelInfo.sKeySuffix;
 }
 
-json CreateAppItemPrviews(struct ModelInfo ModelInfo)
+json CreateAppItemPrviews(object oPC, struct ModelInfo ModelInfo)
 {
-    float fButtonWidth = 80.0;
-    float fButtonHeight = 80.0;
+    float fButtonWidth = GetNuiScaleDimension(oPC, 80.0);
+    float fButtonHeight = GetNuiScaleDimension(oPC, 80.0);
 
-    float fWidth = APP_MAX_ROWS * APP_COLOR_BTN_WIDTH
-        + (APP_MAX_ROWS * 4.0);
+    float fWidth = APP_MAX_ROWS * GetNuiScaleDimension(oPC, APP_COLOR_BTN_WIDTH)
+        + (APP_MAX_ROWS * GetNuiScaleDimension(oPC, 4.0));
 
     float fColumns = fWidth / fButtonWidth;
     int nColumns = FloatToInt(fColumns);
@@ -1553,10 +1575,10 @@ json CreateAppItemPrviews(struct ModelInfo ModelInfo)
 
     json jGroup = NuiGroup(NuiCol(jElements), TRUE);
     jGroup = NuiWidth(jGroup, fWidth);
-    jGroup = NuiHeight(jGroup, fButtonHeight * 3 + 30.0);
+    jGroup = NuiHeight(jGroup, fButtonHeight * 3 + GetNuiScaleDimension(oPC, 30.0));
 
     json jRow = JsonArray();
-    jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, APP_LEFT_SPACER_WIDTH));
+    jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, APP_LEFT_SPACER_WIDTH)));
     jRow = JsonArrayInsert(jRow, jGroup);
     jRow = JsonArrayInsert(jRow, jSpacer);
 
@@ -1687,14 +1709,14 @@ json CreateAppEmptyFullWidthSpacer()
     return NuiRow(jRow);
 }
 
-json CreateAppItem1PartModel(struct ModelInfo ModelInfo)
+json CreateAppItem1PartModel(object oPC, struct ModelInfo ModelInfo)
 {
     json jCol = JsonArray();
     //TODO: I am not sure if this is needed
     //jCol = JsonArrayInsert(jCol, CreateAppEmptyFullWidthSpacer());
 
-    jCol = JsonArrayInsert(jCol, CreateAppItemPrviews(ModelInfo));
-    jCol = JsonArrayInsert(jCol, CreateAppItemPicker());
+    jCol = JsonArrayInsert(jCol, CreateAppItemPrviews(oPC, ModelInfo));
+    jCol = JsonArrayInsert(jCol, CreateAppItemPicker(oPC));
 
     return NuiCol(jCol);
 }
@@ -1719,42 +1741,46 @@ void FeedItem1Part(
     NuiSetBind(oPC, nToken, APP_ITEM_MODELS_ID, ModelInfo.jModelIds);
 }
 
-json CreateAppItem3PartLabels()
+json CreateAppItem3PartLabels(object oPC)
 {
     json jSpacer = NuiSpacer();
     json jRow = JsonArray();
+
+    float fLabelWidth = GetNuiScaleDimension(oPC, APP_ITEM_LABEL_WIDTH);
+    float fLabelHeight = GetNuiScaleDimension(oPC, APP_ITEM_LABEL_HEIGHT);
 
     json jLabelModel = NuiLabel(
         JsonString("Model:"),
         JsonInt(NUI_HALIGN_CENTER),
         JsonInt(NUI_VALIGN_MIDDLE));
-    jLabelModel = NuiHeight(jLabelModel, APP_ITEM_LABEL_HEIGHT);
-    jLabelModel = NuiWidth(jLabelModel, APP_ITEM_LABEL_WIDTH);
+    jLabelModel = NuiHeight(jLabelModel, fLabelHeight);
+    jLabelModel = NuiWidth(jLabelModel, fLabelWidth);
 
     json jLabelColor = NuiLabel(
         JsonString("Color:"),
         JsonInt(NUI_HALIGN_CENTER),
         JsonInt(NUI_VALIGN_MIDDLE));
-    jLabelColor = NuiHeight(jLabelColor, APP_ITEM_LABEL_HEIGHT);
-    jLabelColor = NuiWidth(jLabelColor, APP_ITEM_LABEL_WIDTH);
+    jLabelColor = NuiHeight(jLabelColor, fLabelHeight);
+    jLabelColor = NuiWidth(jLabelColor, fLabelWidth);
 
     jRow = JsonArrayInsert(jRow, jSpacer);
     jRow = JsonArrayInsert(jRow, jLabelModel);
     jRow = JsonArrayInsert(jRow, jLabelColor);
     jRow = JsonArrayInsert(jRow, jSpacer);
 
-    return NuiWidth(NuiRow(jRow), APP_BACKGROUND_IMAGE_WIDTH);
+    return NuiWidth(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_BACKGROUND_IMAGE_WIDTH));
 }
 
 json CreateAppItemModelButtons(
+    object oPC,
     string sImage,
     string sId,
     string sTooltip)
 {
     json jButton = NuiButtonImage(JsonString(sImage));
     jButton = NuiId(jButton, sId);
-    jButton = NuiWidth(jButton, APP_BTN_WIDTH);
-    jButton = NuiHeight(jButton, APP_BTN_HEIGHT);
+    jButton = NuiWidth(jButton, GetNuiScaleDimension(oPC, APP_BTN_WIDTH));
+    jButton = NuiHeight(jButton, GetNuiScaleDimension(oPC, APP_BTN_HEIGHT));
     jButton = NuiTooltip(jButton, JsonString(sTooltip));
     jButton = AppSetForegroundColor(jButton);
 
@@ -1762,6 +1788,7 @@ json CreateAppItemModelButtons(
 }
 
 json CreateAppItemEntry(
+    object oPC,
     string sModelTooltip,
     string sColorTooltip,
     string sModelEntries,
@@ -1776,36 +1803,42 @@ json CreateAppItemEntry(
     json jSpacer = NuiSpacer();
     json jRow = JsonArray();
 
+    float fButtonHeight = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
+    float fButtonWidth = GetNuiScaleDimension(oPC, 100.0);
+
     json jComboTopModel = NuiCombo(
         NuiBind(sModelEntries),
         NuiBind(sModelEntriesId));
-    jComboTopModel = NuiHeight(jComboTopModel, APP_BTN_HEIGHT);
-    jComboTopModel = NuiWidth(jComboTopModel, 100.0);
+    jComboTopModel = NuiHeight(jComboTopModel, fButtonHeight);
+    jComboTopModel = NuiWidth(jComboTopModel, fButtonWidth);
 
     json jComboTopColor = NuiCombo(
         NuiBind(sColorEntries),
         NuiBind(sColorEntriesId));
-    jComboTopColor = NuiHeight(jComboTopColor, APP_BTN_HEIGHT);
-    jComboTopColor = NuiWidth(jComboTopColor, 100.0);
+    jComboTopColor = NuiHeight(jComboTopColor, fButtonHeight);
+    jComboTopColor = NuiWidth(jComboTopColor, fButtonWidth);
 
     jRow = JsonArrayInsert(jRow, jSpacer);
     jRow = JsonArrayInsert(jRow,
-        CreateAppItemModelButtons(APP_ARROW_PREV_BTN, sPreviousModelBtn, "Previous element"));
+        CreateAppItemModelButtons(oPC, APP_ARROW_PREV_BTN, sPreviousModelBtn, "Previous element"));
     jRow = JsonArrayInsert(jRow, jComboTopModel);
     jRow = JsonArrayInsert(jRow,
-        CreateAppItemModelButtons(APP_ARROW_NEXT_BTN, sNextModelBtn, "Next element"));
+        CreateAppItemModelButtons(oPC, APP_ARROW_NEXT_BTN, sNextModelBtn, "Next element"));
     jRow = JsonArrayInsert(jRow,
-        CreateAppItemModelButtons(APP_ARROW_PREV_BTN, sPreviousColorBtn, "Previous color"));
+        CreateAppItemModelButtons(oPC, APP_ARROW_PREV_BTN, sPreviousColorBtn, "Previous color"));
     jRow = JsonArrayInsert(jRow, jComboTopColor);
     jRow = JsonArrayInsert(jRow,
-        CreateAppItemModelButtons(APP_ARROW_NEXT_BTN, sNextColorBtn, "Next color"));
+        CreateAppItemModelButtons(oPC, APP_ARROW_NEXT_BTN, sNextColorBtn, "Next color"));
     jRow = JsonArrayInsert(jRow, jSpacer);
 
     return NuiRow(jRow);
 }
 
-json CreateAppItemImage()
+json CreateAppItemImage(object oPC)
 {
+    float fImageWidth = GetNuiScaleDimension(oPC, APP_ITEM_IMAGE_WIDTH);
+    float fImageHeight = GetNuiScaleDimension(oPC, APP_ITEM_IMAGE_HEIGHT);
+
     json jImageList = JsonArray();
     json jImageTop = NuiDrawListImage(
         JsonBool(TRUE),
@@ -1813,8 +1846,8 @@ json CreateAppItemImage()
         NuiRect(
             0.0,
             0.0,
-            APP_ITEM_IMAGE_WIDTH,
-            APP_ITEM_IMAGE_HEIGHT),
+            fImageWidth,
+            fImageHeight),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
@@ -1827,8 +1860,8 @@ json CreateAppItemImage()
         NuiRect(
             0.0,
             0.0,
-            APP_ITEM_IMAGE_WIDTH,
-            APP_ITEM_IMAGE_HEIGHT),
+            fImageWidth,
+            fImageHeight),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
@@ -1841,12 +1874,12 @@ json CreateAppItemImage()
         NuiRect(
             0.0,
             0.0,
-            APP_ITEM_IMAGE_WIDTH,
-            APP_ITEM_IMAGE_HEIGHT),
+            fImageWidth,
+            fImageHeight),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
-        NUI_DRAW_LIST_ITEM_ORDER_AFTER,
+        NUI_DRAW_LIST_ITEM_ORDER_BEFORE,
         NUI_DRAW_LIST_ITEM_RENDER_ALWAYS);
 
     jImageList = JsonArrayInsert(jImageList, jImageTop);
@@ -1854,8 +1887,8 @@ json CreateAppItemImage()
     jImageList = JsonArrayInsert(jImageList, jImageBottom);
 
     json jImages = NuiSpacer();
-    jImages = NuiWidth(jImages, APP_ITEM_IMAGE_WIDTH);
-    jImages = NuiHeight(jImages, APP_ITEM_IMAGE_HEIGHT);
+    jImages = NuiWidth(jImages, fImageWidth);
+    jImages = NuiHeight(jImages, fImageHeight);
     jImages = NuiDrawList(jImages, JsonBool(FALSE), jImageList);
 
     json jSpacer = NuiSpacer();
@@ -1868,13 +1901,14 @@ json CreateAppItemImage()
     return NuiRow(jRow);
 }
 
-json CreateAppItem3PartModels()
+json CreateAppItem3PartModels(object oPC)
 {
     json jCol = JsonArray();
 
-    jCol = JsonArrayInsert(jCol, CreateAppItem3PartLabels());
+    jCol = JsonArrayInsert(jCol, CreateAppItem3PartLabels(oPC));
     jCol = JsonArrayInsert(jCol,
         CreateAppItemEntry(
+            oPC,
             "Top model",
             "Top color",
             APP_ITEM_TOP_ENTRIES,
@@ -1888,6 +1922,7 @@ json CreateAppItem3PartModels()
 
     jCol = JsonArrayInsert(jCol,
         CreateAppItemEntry(
+            oPC,
             "Middle model",
             "Middle color",
             APP_ITEM_MID_ENTRIES,
@@ -1901,6 +1936,7 @@ json CreateAppItem3PartModels()
 
     jCol = JsonArrayInsert(jCol,
         CreateAppItemEntry(
+            oPC,
             "Bottom model",
             "Bottom color",
             APP_ITEM_BOTTOM_ENTRIES,
@@ -1912,7 +1948,7 @@ json CreateAppItem3PartModels()
             APP_ITEM_BOTTOM_PREVIOUS_COLOR_BTN,
             APP_ITEM_BOTTOM_NEXT_COLOR_BTN));
 
-    jCol = JsonArrayInsert(jCol, CreateAppItemImage());
+    jCol = JsonArrayInsert(jCol, CreateAppItemImage(oPC));
 
     return NuiCol(jCol);
 }
@@ -2097,12 +2133,12 @@ void FeedItem3PartModels(
     OnWatch3PartModels(oPC, nToken);
 }
 
-json CreateAppItemSwapLayout()
+json CreateAppItemSwapLayout(object oPC)
 {
     json jLayout = JsonArray();
     jLayout = NuiRow(jLayout);
-    jLayout = NuiGroup(jLayout, FALSE);
-    jLayout = NuiHeight(jLayout, 370.0);
+    jLayout = NuiGroup(jLayout, FALSE, NUI_SCROLLBARS_NONE);
+    jLayout = NuiHeight(jLayout, GetNuiScaleDimension(oPC, 370.0));
     jLayout = NuiId(jLayout, APP_ITEM_SWAP_LAYOUT);
 
     return jLayout;

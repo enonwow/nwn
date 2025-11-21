@@ -79,21 +79,19 @@ json AppRightPanelCloseButton(
 void CreateAppRightPanelWindow(object oPC, struct ButtonController ButtonController)
 {
     int nDeviceWidth = GetPlayerDeviceProperty(oPC, PLAYER_DEVICE_PROPERTY_GUI_WIDTH);
+    float fDeviceWidthScaled = GetNuiScaleDimension(oPC, IntToFloat(nDeviceWidth));
+
     int nDeviceHeigt = GetPlayerDeviceProperty(oPC, PLAYER_DEVICE_PROPERTY_GUI_HEIGHT);
 
-    float fScale =
-        IntToFloat(nDeviceHeigt) / APP_RIGHT_PANEL_IMAGE_HEIGHT;
+    float fHeight = GetNuiScaleDimension(oPC, APP_IMAGE_HEIGHT);
+    float fWidth = GetNuiScaleDimension(oPC, APP_IMAGE_WIDTH);
 
-    float fHeight = APP_IMAGE_HEIGHT * fScale;
-    float fWidth = APP_IMAGE_WIDTH * fScale;
+    float fOffset = GetNuiScaleDimension(oPC, 10.0);
 
-    float fOffset = 10.0;
-
-    float fImageWidth = APP_RIGHT_PANEL_IMAGE_WIDTH * fScale - fOffset;
-    float fImageHeight = APP_RIGHT_PANEL_IMAGE_HEIGHT * fScale - fOffset;
+    float fImageWidth = GetNuiScaleDimension(oPC, APP_RIGHT_PANEL_IMAGE_WIDTH) - fOffset;    
 
     float fWindowWidth = fImageWidth + fOffset;
-    float fWindowHeight = IntToFloat(nDeviceHeigt);
+    float fWindowHeight = GetNuiScaleDimension(oPC, IntToFloat(nDeviceHeigt));
 
     json jSpacer = NuiSpacer();
 
@@ -102,7 +100,8 @@ void CreateAppRightPanelWindow(object oPC, struct ButtonController ButtonControl
     {
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), 30.0));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), 
+            GetNuiScaleDimension(oPC, 30.0)));
     }
 
     if(ButtonController.bHeadButton)
@@ -231,7 +230,7 @@ void CreateAppRightPanelWindow(object oPC, struct ButtonController ButtonControl
             0.0,
             0.0,
             fImageWidth,
-            fImageHeight),
+            fWindowHeight),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
@@ -264,7 +263,7 @@ void CreateAppRightPanelWindow(object oPC, struct ButtonController ButtonControl
     NuiSetBind(oPC, nToken, WINDOW_TRANSPARENT, JsonBool(TRUE));
     NuiSetBind(oPC, nToken, WINDOW_BORDER, JsonBool(FALSE));
 
-    AppCreateGeometryWindow(oPC, nDeviceWidth - fWindowWidth);
+    AppCreateGeometryWindow(oPC, nDeviceWidth - APP_RIGHT_PANEL_IMAGE_WIDTH);
 }
 
 void AppRightPanelEvents(
@@ -301,8 +300,6 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppHeadWindow(oPC));
 
             SetCameraFace(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_BODY_WINDOW)
         {
@@ -311,8 +308,6 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppBodyWindow(oPC));
 
             SetCameraBody(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_TATOO_WINDOW)
         {
@@ -321,8 +316,6 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppTatooWindow(oPC));
 
             SetCameraBody(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_HELMET_WINDOW)
         {
@@ -330,8 +323,6 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppHelmetWindow(oPC));
 
             SetCameraFace(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_ARMOR_WINDOW)
         {
@@ -339,8 +330,6 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppArmorWindow(oPC));
 
             SetCameraBody(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_CLOAK_WINDOW)
         {
@@ -348,8 +337,6 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppCloakWindow(oPC));
 
             SetCameraBody(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_WEAPON_WINDOW)
         {
@@ -357,17 +344,13 @@ void AppRightPanelEvents(
             DelayCommand(0.1, CreateAppWeaponWindow(oPC));
 
             SetCameraBody(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
         }
         else if(sEventElem == APP_SHIELD_WINDOW)
         {
             WearItems(oPC, oPCopy, nToken);
             DelayCommand(0.1, CreateAppShieldWindow(oPC));
 
-            SetCameraBody(oPC, oPCopy);
-
-            // CreateAppRotateWindow(oPC);
+            SetCameraBody(oPC, oPCopy); 
         }
         else if(sEventElem == APP_MISC_WINDOW)
         {

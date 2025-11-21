@@ -80,12 +80,12 @@ void CreateAppHelmetWindow(object oPC)
 
     json jPrevElements = JsonArray();
 
-    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppColorPicker());
+    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppColorPicker(oPC));
 
     json jNextElements = JsonArray();
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPrviews(ModelInfo));
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPicker());
-    jNextElements = JsonArrayInsert(jNextElements, NuiHeight(NuiSpacer(), 10.0));
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPrviews(oPC, ModelInfo));
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPicker(oPC));
+    jNextElements = JsonArrayInsert(jNextElements, NuiHeight(NuiSpacer(), GetNuiScaleDimension(oPC, 10.0)));
 
     int nToken = AppColorTemplateWindow(
         oPC,
@@ -94,7 +94,7 @@ void CreateAppHelmetWindow(object oPC)
         "cc_color_",
         jPrevElements,
         jNextElements,
-        1000.0,
+        1015.0,
         "lib_app_helmet_e",
         85.0);
 

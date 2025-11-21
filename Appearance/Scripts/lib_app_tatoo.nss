@@ -225,15 +225,19 @@ void FeedAppTatooModel(
     NuiSetBindWatch(oPC, nToken, APP_ITEM_ID, TRUE);
 }
 
-json CreateAppTatooColorPicker()
+json CreateAppTatooColorPicker(object oPC)
 {
     json jSpacer = NuiSpacer();
 
     json jRow = JsonArray();
 
-    json jColorBtn = AppCreateColorPickerButton(COLOR_CHANNEL_TATTOO_1,
+    json jColorBtn = AppCreateColorPickerButton(
+        oPC,
+        COLOR_CHANNEL_TATTOO_1,
         "Tattoo 1");
-    json jColorBtn2 = AppCreateColorPickerButton(COLOR_CHANNEL_TATTOO_2,
+    json jColorBtn2 = AppCreateColorPickerButton(
+        oPC,
+        COLOR_CHANNEL_TATTOO_2,
         "Tattoo 2");
 
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -244,7 +248,7 @@ json CreateAppTatooColorPicker()
     return NuiRow(jRow);
 }
 
-json CreateAppTatooChecks()
+json CreateAppTatooChecks(object oPC)
 {
     json jSpacer = NuiSpacer();
 
@@ -253,38 +257,41 @@ json CreateAppTatooChecks()
     {
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), 30.0));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, 30.0)));
     }
+
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_TATOO_CHECK_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_TATOO_CHECK_HEIGHT);
 
     jRow = JsonArray();
     {
         json jRightBiceps = NuiButton(JsonString(""));
         jRightBiceps = NuiId(jRightBiceps, IntToString(CREATURE_PART_RIGHT_BICEP));
         jRightBiceps = NuiTooltip(jRightBiceps, JsonString("Right biceps"));
-        jRightBiceps = NuiWidth(jRightBiceps, APP_TATOO_CHECK_WIDTH);
+        jRightBiceps = NuiWidth(jRightBiceps, fButtonWidthScaled);
         jRightBiceps = AppSetForegroundColor(jRightBiceps);
 
         json jTorso = NuiButton(JsonString(""));
         jTorso = NuiId(jTorso, IntToString(CREATURE_PART_TORSO));
         jTorso = NuiTooltip(jTorso, JsonString("Torso"));
-        jTorso = NuiWidth(jTorso, APP_TATOO_CHECK_WIDTH);
+        jTorso = NuiWidth(jTorso, fButtonWidthScaled);
         jTorso = AppSetForegroundColor(jTorso);
 
         json jLeftBiceps = NuiButton(JsonString(""));
         jLeftBiceps = NuiId(jLeftBiceps, IntToString(CREATURE_PART_LEFT_BICEP));
         jLeftBiceps = NuiTooltip(jLeftBiceps, JsonString("Left biceps"));
-        jLeftBiceps = NuiWidth(jLeftBiceps, APP_TATOO_CHECK_WIDTH);
+        jLeftBiceps = NuiWidth(jLeftBiceps, fButtonWidthScaled);
         jLeftBiceps = AppSetForegroundColor(jLeftBiceps);
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 32.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 32.0)));
         jRow = JsonArrayInsert(jRow, jRightBiceps);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 10.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 10.0)));
         jRow = JsonArrayInsert(jRow, jTorso);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 11.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 11.0)));
         jRow = JsonArrayInsert(jRow, jLeftBiceps);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_TATOO_CHECK_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), fButtonHeightScaled));
     }
 
     jRow = JsonArray();
@@ -292,30 +299,37 @@ json CreateAppTatooChecks()
         json jRightForearm = NuiButton(JsonString(""));
         jRightForearm = NuiId(jRightForearm, IntToString(CREATURE_PART_RIGHT_FOREARM));
         jRightForearm = NuiTooltip(jRightForearm, JsonString("Right forearm"));
-        jRightForearm = NuiWidth(jRightForearm, APP_TATOO_CHECK_WIDTH);
+        jRightForearm = NuiWidth(jRightForearm, fButtonWidthScaled);
         jRightForearm = AppSetForegroundColor(jRightForearm);
 
         json jTorso = NuiButton(JsonString(""));
         jTorso = NuiId(jTorso, IntToString(CREATURE_PART_TORSO));
         jTorso = NuiTooltip(jTorso, JsonString("Torso"));
-        jTorso = NuiWidth(jTorso, APP_TATOO_CHECK_WIDTH);
+        jTorso = NuiWidth(jTorso, fButtonWidthScaled);
         jTorso = AppSetForegroundColor(jTorso);
 
         json jLeftForearm = NuiButton(JsonString(""));
         jLeftForearm = NuiId(jLeftForearm, IntToString(CREATURE_PART_LEFT_FOREARM));
         jLeftForearm = NuiTooltip(jLeftForearm, JsonString("Left forearm"));
-        jLeftForearm = NuiWidth(jLeftForearm, APP_TATOO_CHECK_WIDTH);
+        jLeftForearm = NuiWidth(jLeftForearm, fButtonWidthScaled);
         jLeftForearm = AppSetForegroundColor(jLeftForearm);
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 25.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 25.0)));
         jRow = JsonArrayInsert(jRow, jRightForearm);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 17.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 17.0)));
         jRow = JsonArrayInsert(jRow, jTorso);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 18.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 18.0)));
         jRow = JsonArrayInsert(jRow, jLeftForearm);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiRow(jRow));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), fButtonHeightScaled));
+    }
+
+    jRow = JsonArray();
+    {
+        jRow = JsonArrayInsert(jRow, jSpacer);
+
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, 15.0)));
     }
 
     jRow = JsonArray();
@@ -323,29 +337,29 @@ json CreateAppTatooChecks()
         json jRightThigh = NuiButton(JsonString(""));
         jRightThigh = NuiId(jRightThigh, IntToString(CREATURE_PART_RIGHT_THIGH));
         jRightThigh = NuiTooltip(jRightThigh, JsonString("Right thigh"));
-        jRightThigh = NuiWidth(jRightThigh, APP_TATOO_CHECK_WIDTH);
+        jRightThigh = NuiWidth(jRightThigh, fButtonWidthScaled);
         jRightThigh = AppSetForegroundColor(jRightThigh);
 
         json jLeftThigh = NuiButton(JsonString(""));
         jLeftThigh = NuiId(jLeftThigh, IntToString(CREATURE_PART_LEFT_THIGH));
         jLeftThigh = NuiTooltip(jLeftThigh, JsonString("Left thigh"));
-        jLeftThigh = NuiWidth(jLeftThigh, APP_TATOO_CHECK_WIDTH);
+        jLeftThigh = NuiWidth(jLeftThigh, fButtonWidthScaled);
         jLeftThigh = AppSetForegroundColor(jLeftThigh);
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 50.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 50.0)));
         jRow = JsonArrayInsert(jRow, jRightThigh);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 12.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 12.0)));
         jRow = JsonArrayInsert(jRow, jLeftThigh);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiRow(jRow));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), fButtonHeightScaled));
     }
 
     jRow = JsonArray();
     {
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), 10.0));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, 35.0)));
     }
 
     jRow = JsonArray();
@@ -353,34 +367,34 @@ json CreateAppTatooChecks()
         json jRightShin = NuiButton(JsonString(""));
         jRightShin = NuiId(jRightShin, IntToString(CREATURE_PART_RIGHT_SHIN));
         jRightShin = NuiTooltip(jRightShin, JsonString("Right shin"));
-        jRightShin = NuiWidth(jRightShin, APP_TATOO_CHECK_WIDTH);
+        jRightShin = NuiWidth(jRightShin, fButtonWidthScaled);
         jRightShin = AppSetForegroundColor(jRightShin);
 
         json jLeftShin = NuiButton(JsonString(""));
         jLeftShin = NuiId(jLeftShin, IntToString(CREATURE_PART_LEFT_SHIN));
         jLeftShin = NuiTooltip(jLeftShin, JsonString("Left shin"));
-        jLeftShin = NuiWidth(jLeftShin, APP_TATOO_CHECK_WIDTH);
+        jLeftShin = NuiWidth(jLeftShin, fButtonWidthScaled);
         jLeftShin = AppSetForegroundColor(jLeftShin);
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 48.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 48.0)));
         jRow = JsonArrayInsert(jRow, jRightShin);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 18.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 18.0)));
         jRow = JsonArrayInsert(jRow, jLeftShin);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiRow(jRow));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), fButtonHeightScaled));
     }
 
     return jCol;
 }
 
-json CreateAppTatooPicker()
+json CreateAppTatooPicker(object oPC)
 {
     json jSpacer = NuiSpacer();
 
     json jCheck = NuiCheck(JsonString("Nałożony"), NuiBind(APP_TATOO_SELECTED));
-    jCheck = NuiWidth(jCheck, 140.0);
-    jCheck = NuiHeight(jCheck, APP_BTN_HEIGHT);
+    jCheck = NuiWidth(jCheck, GetNuiScaleDimension(oPC, 140.0));
+    jCheck = NuiHeight(jCheck, GetNuiScaleDimension(oPC, APP_BTN_HEIGHT));
     jCheck = AppSetForegroundColor(jCheck);
 
     json jRow = JsonArray();
@@ -417,84 +431,87 @@ json CreateAppTatooImage(
     return jImageList;
 }
 
-json CreateAppTatooImageList()
+json CreateAppTatooImageList(object oPC)
 {
     json jImageList = JsonArray();
+
+    float fImageWidthScaled = GetNuiScaleDimension(oPC, APP_TATOO_IMAGE_WIDTH);
+    float fImageHeightScaled = GetNuiScaleDimension(oPC, APP_TATOO_IMAGE_HEIGHT);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_BACKGROUND,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_RIGHT_BICEP,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_TORSO,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_LEFT_BICEP,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_RIGHT_FOREARM,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_LEFT_FOREARM,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_RIGHT_THIGH,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_LEFT_THIGH,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_RIGHT_SHIN,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     jImageList = CreateAppTatooImage(
         jImageList,
         APP_TATOO_LEFT_SHIN,
-        APP_TATOO_IMAGE_WIDTH,
-        APP_TATOO_IMAGE_HEIGHT);
+        fImageWidthScaled,
+        fImageHeightScaled);
 
     return jImageList;
 }
 
-json CreateMergedTatooImage()
+json CreateMergedTatooImage(object oPC)
 {
     json jSpacer = NuiSpacer();
 
-    json jGroupList = CreateAppTatooChecks();
+    json jGroupList = CreateAppTatooChecks(oPC);
 
-    json jImageList = CreateAppTatooImageList();
+    json jImageList = CreateAppTatooImageList(oPC);
 
     json jResult = NuiDrawList(NuiCol(jGroupList), JsonBool(FALSE), jImageList);
-    jResult = NuiWidth(jResult, APP_TATOO_IMAGE_WIDTH);
-    jResult = NuiHeight(jResult, APP_TATOO_IMAGE_HEIGHT);
+    jResult = NuiWidth(jResult, GetNuiScaleDimension(oPC, APP_TATOO_IMAGE_WIDTH));
+    jResult = NuiHeight(jResult, GetNuiScaleDimension(oPC, APP_TATOO_IMAGE_HEIGHT));
 
     json jRow = JsonArray();
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -508,12 +525,12 @@ void CreateAppTatooWindow(object oPC)
 {
     json jPrevElements = JsonArray();
 
-    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppTatooColorPicker());
+    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppTatooColorPicker(oPC));
 
     json jNextElements = JsonArray();
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPicker());
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppTatooPicker());
-    jNextElements = JsonArrayInsert(jNextElements, CreateMergedTatooImage());
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPicker(oPC));
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppTatooPicker(oPC));
+    jNextElements = JsonArrayInsert(jNextElements, CreateMergedTatooImage(oPC));
 
     int nToken = AppColorTemplateWindow(
         oPC,
@@ -522,7 +539,7 @@ void CreateAppTatooWindow(object oPC)
         "cc_color_",
         jPrevElements,
         jNextElements,
-        1015.0,
+        1030.0,
         "lib_app_tatoo_ev",
         85.0);
 }
@@ -593,13 +610,13 @@ void AppTatooCopy(object oSource, object oTarget)
     AppTatooValidate(oSource, oTarget, CREATURE_PART_RIGHT_BICEP);
     AppTatooValidate(oSource, oTarget, CREATURE_PART_TORSO);
     AppTatooValidate(oSource, oTarget, CREATURE_PART_LEFT_BICEP);
-    
+
     AppTatooValidate(oSource, oTarget, CREATURE_PART_RIGHT_FOREARM);
     AppTatooValidate(oSource, oTarget, CREATURE_PART_LEFT_FOREARM);
-    
+
     AppTatooValidate(oSource, oTarget, CREATURE_PART_RIGHT_THIGH);
     AppTatooValidate(oSource, oTarget, CREATURE_PART_LEFT_THIGH);
-    
+
     AppTatooValidate(oSource, oTarget, CREATURE_PART_RIGHT_SHIN);
     AppTatooValidate(oSource, oTarget, CREATURE_PART_LEFT_SHIN);
 }

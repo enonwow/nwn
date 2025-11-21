@@ -76,7 +76,7 @@ void FeedAppBodyWindow(object oPC, int nToken)
     FeedAppBodyTailWindow(oPC, nToken);
 }
 
-json CreateAppBodyPhenotype()
+json CreateAppBodyPhenotype(object oPC)
 {
     json jSpacer = NuiSpacer();
 
@@ -96,10 +96,10 @@ json CreateAppBodyPhenotype()
         NuiBind(APP_BODY_PHENOTYPE));
 
     jNuiOptions = AppSetForegroundColor(jNuiOptions);
-    jNuiOptions = NuiWidth(jNuiOptions, 150.0);
+    jNuiOptions = NuiWidth(jNuiOptions, GetNuiScaleDimension(oPC, 150.0));
 
     json jRow = JsonArray();
-    jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 50.0));
+    jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 50.0)));
     jRow = JsonArrayInsert(jRow, jLabel);
     jRow = JsonArrayInsert(jRow, jNuiOptions);
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -136,6 +136,9 @@ json CreateAppBodyWings(object oPC)
 {
     json jSpacer = NuiSpacer();
 
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
+
     json jLabel = NuiLabel(
         JsonString("Wings:"),
         JsonInt(NUI_HALIGN_LEFT),
@@ -144,20 +147,20 @@ json CreateAppBodyWings(object oPC)
 
     json jPrevBtn = NuiButtonImage(JsonString(APP_ARROW_PREV_BTN));
     jPrevBtn = NuiId(jPrevBtn, APP_BODY_WINGS_PREV_BTN);
-    jPrevBtn = NuiWidth(jPrevBtn, APP_BTN_WIDTH);
-    jPrevBtn = NuiHeight(jPrevBtn, APP_BTN_HEIGHT);
+    jPrevBtn = NuiWidth(jPrevBtn, fButtonWidthScaled);
+    jPrevBtn = NuiHeight(jPrevBtn, fButtonHeightScaled);
     jPrevBtn = NuiTooltip(jPrevBtn, JsonString("Previous wings"));
     jPrevBtn = AppSetForegroundColor(jPrevBtn);
 
     json jCombo = NuiCombo(
         NuiBind(APP_BODY_WINGS_ENTRIES),
         NuiBind(APP_BODY_WINGS_ID));
-    jCombo = NuiHeight(jCombo, APP_BTN_HEIGHT);
+    jCombo = NuiHeight(jCombo, fButtonHeightScaled);
 
     json jNextBtn = NuiButtonImage(JsonString(APP_ARROW_NEXT_BTN));
     jNextBtn = NuiId(jNextBtn, APP_BODY_WINGS_NEXT_BTN);
-    jNextBtn = NuiWidth(jNextBtn, APP_BTN_WIDTH);
-    jNextBtn = NuiHeight(jNextBtn, APP_BTN_HEIGHT);
+    jNextBtn = NuiWidth(jNextBtn, fButtonWidthScaled);
+    jNextBtn = NuiHeight(jNextBtn, fButtonHeightScaled);
     jNextBtn = NuiTooltip(jNextBtn, JsonString("Next wings"));
     jNextBtn = AppSetForegroundColor(jNextBtn);
 
@@ -175,6 +178,9 @@ json CreateAppBodyTail(object oPC)
 {
     json jSpacer = NuiSpacer();
 
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
+
     json jLabel = NuiLabel(
         JsonString("Tail:"),
         JsonInt(NUI_HALIGN_LEFT),
@@ -183,20 +189,20 @@ json CreateAppBodyTail(object oPC)
 
     json jPrevBtn = NuiButtonImage(JsonString(APP_ARROW_PREV_BTN));
     jPrevBtn = NuiId(jPrevBtn, APP_BODY_TAIL_PREV_BTN);
-    jPrevBtn = NuiWidth(jPrevBtn, APP_BTN_WIDTH);
-    jPrevBtn = NuiHeight(jPrevBtn, APP_BTN_HEIGHT);
+    jPrevBtn = NuiWidth(jPrevBtn, fButtonWidthScaled);
+    jPrevBtn = NuiHeight(jPrevBtn, fButtonHeightScaled);
     jPrevBtn = NuiTooltip(jPrevBtn, JsonString("Previous tail"));
     jPrevBtn = AppSetForegroundColor(jPrevBtn);
 
     json jCombo = NuiCombo(
         NuiBind(APP_BODY_TAIL_ENTRIES),
         NuiBind(APP_BODY_TAIL_ID));
-    jCombo = NuiHeight(jCombo, APP_BTN_HEIGHT);
+    jCombo = NuiHeight(jCombo, fButtonHeightScaled);
 
     json jNextBtn = NuiButtonImage(JsonString(APP_ARROW_NEXT_BTN));
     jNextBtn = NuiId(jNextBtn, APP_BODY_TAIL_NEXT_BTN);
-    jNextBtn = NuiWidth(jNextBtn, APP_BTN_WIDTH);
-    jNextBtn = NuiHeight(jNextBtn, APP_BTN_HEIGHT);
+    jNextBtn = NuiWidth(jNextBtn, fButtonWidthScaled);
+    jNextBtn = NuiHeight(jNextBtn, fButtonHeightScaled);
     jNextBtn = NuiTooltip(jNextBtn, JsonString("Next tail"));
     jNextBtn = AppSetForegroundColor(jNextBtn);
 
@@ -231,7 +237,7 @@ void CreateAppBodyWindow(object oPC)
         "cc_color_s_",
         JsonArray(),
         jNextElements,
-        735.0,
+        750.0,
         "lib_app_body_ev",
         70.0);
 

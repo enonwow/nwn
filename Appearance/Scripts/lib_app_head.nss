@@ -42,6 +42,7 @@ void CreateAppHeadWindow(object oPC)
     json jSpacer = NuiSpacer();
     json jNextElements = JsonArray();
     jNextElements = JsonArrayInsert(jNextElements, CreateAppItemPicker(
+        oPC,
         "Previous head",
         "Next head"));
 
@@ -52,7 +53,7 @@ void CreateAppHeadWindow(object oPC)
         "cc_color_h_",
         JsonArray(),
         jNextElements,
-        640.0,
+        670.0,
         "lib_app_head_ev",
         65.0);
 

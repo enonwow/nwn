@@ -119,10 +119,10 @@ void CreateAppCloakWindow(object oPC)
 
     json jPrevElements = JsonArray();
 
-    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppColorPicker());
+    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppColorPicker(oPC));
 
     json jNextElements = JsonArray();
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppItem1PartModel(ModelInfo));
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppItem1PartModel(oPC, ModelInfo));
 
     int nToken = AppColorTemplateWindow(
         oPC,

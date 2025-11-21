@@ -29,6 +29,8 @@ float APP_ARMOR_BUTTON_HEIGHT = 25.0;
 float APP_ARMOR_IMAGE_WIDTH = 175.0;
 float APP_ARMOR_IMAGE_HEIGHT = 245.0;
 
+float APP_ARMOR_COMBO_WIDTH = 150.0;
+
 string Get2daPart(int nModel)
 {
     string s2daParts;
@@ -94,7 +96,10 @@ string Get2daPart(int nModel)
     return s2daParts;
 }
 
-json CreateModelArmorNui(int nPart, string sTooltip)
+json CreateModelArmorNui(
+    object oPC, 
+    int nPart, 
+    string sTooltip)
 {
     string sPart = IntToString(nPart);
 
@@ -102,29 +107,28 @@ json CreateModelArmorNui(int nPart, string sTooltip)
     jButton = NuiId(jButton, ARMOR_PART + sPart);
     jButton = NuiEncouraged(jButton, NuiBind(ARMOR_PART_ENCOURAGED + sPart));
     jButton = NuiTooltip(jButton, JsonString(sTooltip));
-    jButton = NuiWidth(jButton, APP_ARMOR_BUTTON_WIDTH);
+    jButton = NuiWidth(jButton, GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_WIDTH));
     jButton = AppSetForegroundColor(jButton);
 
     return jButton;
 }
 
-json CreateAppArmorSpecificColorPicker()
+json CreateAppArmorSpecificColorPicker(object oPC)
 {
     json jSpacer = NuiSpacer();
     json jRow = JsonArray();
 
     json jSpecificColorBtn = NuiCheck(JsonString("Color for the selected part"), NuiBind(APP_ARMOR_SPECIFIC_COLOR));
-    jSpecificColorBtn = NuiWidth(jSpecificColorBtn, 220.0);
-    jSpecificColorBtn = NuiHeight(jSpecificColorBtn, 40.0);
+    jSpecificColorBtn = NuiWidth(jSpecificColorBtn, GetNuiScaleDimension(oPC, 220.0));
+    jSpecificColorBtn = NuiHeight(jSpecificColorBtn, GetNuiScaleDimension(oPC, 40.0));
     jSpecificColorBtn = AppSetForegroundColor(jSpecificColorBtn);
 
-    // json jButton = NuiButtonImage(JsonString("cc_color_255"));
     json jButton = NuiButton(JsonString("Clrear"));
     jButton = NuiId(jButton, APP_ARMOR_CLEAR_BTN);
     jButton = NuiTooltip(jButton, JsonString("Clear selected color"));
     jButton = NuiVisible(jButton, NuiBind(APP_ARMOR_SPECIFIC_COLOR));
-    jButton = NuiWidth(jButton, 100.0);
-    jButton = NuiHeight(jButton, 40.0);
+    jButton = NuiWidth(jButton, GetNuiScaleDimension(oPC, 100.0));
+    jButton = NuiHeight(jButton, GetNuiScaleDimension(oPC, 40.0));
     jButton = AppSetForegroundColor(jButton);
 
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -142,7 +146,7 @@ json CreateAppArmorPartsUpperSpacer()
     return NuiRow(jRow);
 }
 
-json CreateAppArmorParts()
+json CreateAppArmorParts(object oPC)
 {
     json jSpacer = NuiSpacer();
     json jCol = JsonArray();
@@ -151,46 +155,46 @@ json CreateAppArmorParts()
 
     json jRow = JsonArray();
     {
-        json jRightShoulder = CreateModelArmorNui(0, "Right shoulder");
-        json jNeck = CreateModelArmorNui(1, "Neck");
-        json jLeftShoulder = CreateModelArmorNui(2, "Left shoulder");
+        json jRightShoulder = CreateModelArmorNui(oPC, 0, "Right shoulder");
+        json jNeck = CreateModelArmorNui(oPC, 1, "Neck");
+        json jLeftShoulder = CreateModelArmorNui(oPC, 2, "Left shoulder");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 40.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 40.0)));
         jRow = JsonArrayInsert(jRow, jRightShoulder);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 9.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 9.0)));
         jRow = JsonArrayInsert(jRow, jNeck);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 10.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 10.0)));
         jRow = JsonArrayInsert(jRow, jLeftShoulder);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     jRow = JsonArray();
     {
-        json jRightBicep = CreateModelArmorNui(3, "Right biceps");
-        json jTorso = CreateModelArmorNui(4, "Torso");
-        json jLeftBicep = CreateModelArmorNui(5, "Left biceps");
+        json jRightBicep = CreateModelArmorNui(oPC, 3, "Right biceps");
+        json jTorso = CreateModelArmorNui(oPC, 4, "Torso");
+        json jLeftBicep = CreateModelArmorNui(oPC, 5, "Left biceps");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 30.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 30.0)));
         jRow = JsonArrayInsert(jRow, jRightBicep);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 19.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 19.0)));
         jRow = JsonArrayInsert(jRow, jTorso);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 20.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 20.0)));
         jRow = JsonArrayInsert(jRow, jLeftBicep);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     jRow = JsonArray();
     {
-        json jRightForearm = CreateModelArmorNui(6, "Right forearm");
-        json jBelt = CreateModelArmorNui(7, "Belt");
-        json jLeftForearm = CreateModelArmorNui(8, "Left forearm");
-        json jPelvis = CreateModelArmorNui(10, "Pelvis");
+        json jRightForearm = CreateModelArmorNui(oPC, 6, "Right forearm");
+        json jBelt = CreateModelArmorNui(oPC, 7, "Belt");
+        json jLeftForearm = CreateModelArmorNui(oPC, 8, "Left forearm");
+        json jPelvis = CreateModelArmorNui(oPC, 10, "Pelvis");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 25.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 25.0)));
         jRow = JsonArrayInsert(jRow, jRightForearm);
         jRow = JsonArrayInsert(jRow, jPelvis);
         jRow = JsonArrayInsert(jRow, jBelt);
@@ -198,17 +202,17 @@ json CreateAppArmorParts()
         jRow = JsonArrayInsert(jRow, jLeftForearm);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     jRow = JsonArray();
     {
-        json jBelt = CreateModelArmorNui(7, "Belt");
-        json jRightHand = CreateModelArmorNui(9, "Right hand");
-        json jPelvis = CreateModelArmorNui(10, "Pelvis");
-        json jLeftHand = CreateModelArmorNui(11, "Left hand");
+        json jBelt = CreateModelArmorNui(oPC, 7, "Belt");
+        json jRightHand = CreateModelArmorNui(oPC, 9, "Right hand");
+        json jPelvis = CreateModelArmorNui(oPC, 10, "Pelvis");
+        json jLeftHand = CreateModelArmorNui(oPC, 11, "Left hand");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 25.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 25.0)));
         jRow = JsonArrayInsert(jRow, jRightHand);
         jRow = JsonArrayInsert(jRow, jPelvis);
         jRow = JsonArrayInsert(jRow, jBelt);
@@ -216,55 +220,55 @@ json CreateAppArmorParts()
         jRow = JsonArrayInsert(jRow, jLeftHand);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     jRow = JsonArray();
     {
-        json jRightThigh = CreateModelArmorNui(12, "Right thigh");
-        json jLeftThigh = CreateModelArmorNui(13, "Left thigh");
+        json jRightThigh = CreateModelArmorNui(oPC, 12, "Right thigh");
+        json jLeftThigh = CreateModelArmorNui(oPC, 13, "Left thigh");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 48.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 48.0)));
         jRow = JsonArrayInsert(jRow, jRightThigh);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 20.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 20.0)));
         jRow = JsonArrayInsert(jRow, jLeftThigh);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     jRow = JsonArray();
     {
-        json jRightShin = CreateModelArmorNui(14, "Right shin");
-        json jLeftShin = CreateModelArmorNui(15, "Left shin");
+        json jRightShin = CreateModelArmorNui(oPC, 14, "Right shin");
+        json jLeftShin = CreateModelArmorNui(oPC, 15, "Left shin");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 48.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 48.0)));
         jRow = JsonArrayInsert(jRow, jRightShin);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 20.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 20.0)));
         jRow = JsonArrayInsert(jRow, jLeftShin);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     jRow = JsonArray();
     {
-        json jRightFoot = CreateModelArmorNui(16, "Right foot");
-        json jLeftFoot = CreateModelArmorNui(17, "Left foot");
+        json jRightFoot = CreateModelArmorNui(oPC, 16, "Right foot");
+        json jLeftFoot = CreateModelArmorNui(oPC, 17, "Left foot");
 
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 47.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 47.0)));
         jRow = JsonArrayInsert(jRow, jRightFoot);
-        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 24.0));
+        jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 24.0)));
         jRow = JsonArrayInsert(jRow, jLeftFoot);
         jRow = JsonArrayInsert(jRow, jSpacer);
 
-        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), APP_ARMOR_BUTTON_HEIGHT));
+        jCol = JsonArrayInsert(jCol, NuiHeight(NuiRow(jRow), GetNuiScaleDimension(oPC, APP_ARMOR_BUTTON_HEIGHT)));
     }
 
     return jCol;
 }
 
-json CreateAppArmorRobe()
+json CreateAppArmorRobe(object oPC)
 {
     json jRow = JsonArray();
 
@@ -278,11 +282,11 @@ json CreateAppArmorRobe()
     jButton = NuiId(jButton, ARMOR_PART + sPart);
     jButton = NuiEncouraged(jButton, NuiBind(ARMOR_PART_ENCOURAGED + sPart));
     jButton = NuiTooltip(jButton, JsonString("Robe"));
-    jButton = NuiWidth(jButton, APP_ARMOR_IMAGE_WIDTH - 50.0);
-    jButton = NuiHeight(jButton, APP_ARMOR_IMAGE_HEIGHT - 25.0);
+    jButton = NuiWidth(jButton, GetNuiScaleDimension(oPC, APP_ARMOR_IMAGE_WIDTH - 50.0));
+    jButton = NuiHeight(jButton, GetNuiScaleDimension(oPC, APP_ARMOR_IMAGE_HEIGHT - 25.0));
     jButton = AppSetForegroundColor(jButton);
 
-    jRow = JsonArrayInsert(jRow, NuiWidth(NuiSpacer(), 20.0));
+    jRow = JsonArrayInsert(jRow, NuiWidth(NuiSpacer(), GetNuiScaleDimension(oPC, 20.0)));
     jRow = JsonArrayInsert(jRow, jButton);
 
     jCol = JsonArrayInsert(jCol, NuiRow(jRow));
@@ -337,29 +341,29 @@ json CreateAppArmorPartsImage(
     return jResult;
 }
 
-json CreateAppArmorNextElements()
+json CreateAppArmorNextElements(object oPC)
 {
     json jRow = JsonArray();
     json jCol = JsonArray();
     {
         json jSpacer = NuiSpacer();
 
-        json jArmorParts = CreateAppArmorParts();
-        json jRobe = CreateAppArmorRobe();
+        json jArmorParts = CreateAppArmorParts(oPC);
+        json jRobe = CreateAppArmorRobe(oPC);
 
         json jArmorPartsImage = CreateAppArmorPartsImage(
             jArmorParts,
             "app_armor_body",
             APP_ARMOR_PART_IMAGE,
-            APP_ARMOR_IMAGE_WIDTH,
-            APP_ARMOR_IMAGE_HEIGHT);
+            GetNuiScaleDimension(oPC, APP_ARMOR_IMAGE_WIDTH),
+            GetNuiScaleDimension(oPC, APP_ARMOR_IMAGE_HEIGHT));
 
         json jRobeImage = CreateAppArmorPartsImage(
             jRobe,
             "app_cloth_body",
             APP_ARMOR_PART_IMAGE_2,
-            APP_ARMOR_IMAGE_WIDTH,
-            APP_ARMOR_IMAGE_HEIGHT);
+            GetNuiScaleDimension(oPC, APP_ARMOR_IMAGE_WIDTH),
+            GetNuiScaleDimension(oPC, APP_ARMOR_IMAGE_HEIGHT));
 
         jRow = JsonArrayInsert(jRow, jSpacer);
         jRow = JsonArrayInsert(jRow, jArmorPartsImage);
@@ -370,24 +374,28 @@ json CreateAppArmorNextElements()
     return NuiRow(jRow);
 }
 
-json CreateAppArmorPartPicker()
+json CreateAppArmorPartPicker(object oPC)
 {
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
+
     json jLeftBtn = NuiButtonImage(JsonString(APP_ARROW_PREV_BTN));
     jLeftBtn = NuiId(jLeftBtn, APP_PREV_ARMOR_PART);
-    jLeftBtn = NuiWidth(jLeftBtn, APP_BTN_WIDTH);
-    jLeftBtn = NuiHeight(jLeftBtn, APP_BTN_HEIGHT);
+    jLeftBtn = NuiWidth(jLeftBtn, fButtonWidthScaled);
+    jLeftBtn = NuiHeight(jLeftBtn, fButtonHeightScaled);
     jLeftBtn = NuiTooltip(jLeftBtn, JsonString("Previous armor part"));
     jLeftBtn = AppSetForegroundColor(jLeftBtn);
 
     json jCombo = NuiCombo(
         NuiBind(ARMOR_ENTRIES),
         NuiBind(ARMOR_ID));
-    jCombo = NuiHeight(jCombo, APP_BTN_HEIGHT);
+    jCombo = NuiHeight(jCombo, fButtonHeightScaled);
+    jCombo = NuiWidth(jCombo, GetNuiScaleDimension(oPC, APP_ARMOR_COMBO_WIDTH));
 
     json jRightBtn = NuiButtonImage(JsonString(APP_ARROW_NEXT_BTN));
     jRightBtn = NuiId(jRightBtn, APP_NEXT_ARMOR_PART);
-    jRightBtn = NuiWidth(jRightBtn, APP_BTN_WIDTH);
-    jRightBtn = NuiHeight(jRightBtn, APP_BTN_HEIGHT);
+    jRightBtn = NuiWidth(jRightBtn, fButtonWidthScaled);
+    jRightBtn = NuiHeight(jRightBtn, fButtonHeightScaled);
     jRightBtn = NuiTooltip(jRightBtn, JsonString("Next armor part"));
     jRightBtn = AppSetForegroundColor(jRightBtn);
 
@@ -399,24 +407,28 @@ json CreateAppArmorPartPicker()
     return NuiRow(jRow);
 }
 
-json CreateAppArmorPickerElements()
+json CreateAppArmorPickerElements(object oPC)
 {
+    float fButtonWidthScaled = GetNuiScaleDimension(oPC, APP_BTN_WIDTH);
+    float fButtonHeightScaled = GetNuiScaleDimension(oPC, APP_BTN_HEIGHT);
+
     json jLeftBtn = NuiButtonImage(JsonString(APP_ARROW_PREV_BTN));
     jLeftBtn = NuiId(jLeftBtn, APP_PREV_ELEMENT);
-    jLeftBtn = NuiWidth(jLeftBtn, APP_BTN_WIDTH);
-    jLeftBtn = NuiHeight(jLeftBtn, APP_BTN_HEIGHT);
+    jLeftBtn = NuiWidth(jLeftBtn, fButtonWidthScaled);
+    jLeftBtn = NuiHeight(jLeftBtn, fButtonHeightScaled);
     jLeftBtn = NuiTooltip(jLeftBtn, JsonString("Previous element"));
     jLeftBtn = AppSetForegroundColor(jLeftBtn);
 
     json jCombo = NuiCombo(
         NuiBind(ARMOR_ELEMENTS_ENTRIES),
         NuiBind(ARMOR_ELEMENTS_ID));
-    jCombo = NuiHeight(jCombo, APP_BTN_HEIGHT);
+    jCombo = NuiHeight(jCombo, fButtonHeightScaled);
+    jCombo = NuiWidth(jCombo, GetNuiScaleDimension(oPC, APP_ARMOR_COMBO_WIDTH));
 
     json jRightBtn = NuiButtonImage(JsonString(APP_ARROW_NEXT_BTN));
     jRightBtn = NuiId(jRightBtn, APP_NEXT_ELEMENT);
-    jRightBtn = NuiWidth(jRightBtn, APP_BTN_WIDTH);
-    jRightBtn = NuiHeight(jRightBtn, APP_BTN_HEIGHT);
+    jRightBtn = NuiWidth(jRightBtn, fButtonWidthScaled);
+    jRightBtn = NuiHeight(jRightBtn, fButtonHeightScaled);
     jRightBtn = NuiTooltip(jRightBtn, JsonString("Next element"));
     jRightBtn = AppSetForegroundColor(jRightBtn);
 
@@ -428,14 +440,14 @@ json CreateAppArmorPickerElements()
     return NuiRow(jRow);
 }
 
-json CreateAppArmorPartPickerMerge()
+json CreateAppArmorPartPickerMerge(object oPC)
 {
     json jSpacer = NuiSpacer();
 
     json jRow = JsonArray();
-    jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, 27.0));
-    jRow = JsonArrayInsert(jRow, CreateAppArmorPartPicker());
-    jRow = JsonArrayInsert(jRow, CreateAppArmorPickerElements());
+    jRow = JsonArrayInsert(jRow, NuiWidth(jSpacer, GetNuiScaleDimension(oPC, 27.0)));
+    jRow = JsonArrayInsert(jRow, CreateAppArmorPartPicker(oPC));
+    jRow = JsonArrayInsert(jRow, CreateAppArmorPickerElements(oPC));
     jRow = JsonArrayInsert(jRow, jSpacer);
 
     return NuiRow(jRow);
@@ -753,12 +765,12 @@ void CreateAppArmorWindow(object oPC)
 {
     json jPrevElements = JsonArray();
 
-    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppColorPicker());
-    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppArmorSpecificColorPicker());
+    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppColorPicker(oPC));
+    jPrevElements = JsonArrayInsert(jPrevElements, CreateAppArmorSpecificColorPicker(oPC));
 
     json jNextElements = JsonArray();
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppArmorPartPickerMerge());
-    jNextElements = JsonArrayInsert(jNextElements, CreateAppArmorNextElements());
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppArmorPartPickerMerge(oPC));
+    jNextElements = JsonArrayInsert(jNextElements, CreateAppArmorNextElements(oPC));
 
     int nToken = AppColorTemplateWindow(
         oPC,
@@ -767,7 +779,7 @@ void CreateAppArmorWindow(object oPC)
         "cc_color_",
         jPrevElements,
         jNextElements,
-        1010.0,
+        1030.0,
         "lib_app_armor_ev",
         80.0);
 

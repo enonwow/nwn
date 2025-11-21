@@ -61,24 +61,27 @@ struct WeaponInfo GetWeaponInfo(object oPC)
     return WeaponInfo;
 }
 
-json CreateAppWeaponButtons()
+json CreateAppWeaponButtons(object oPC)
 {
     json jSpacer = NuiSpacer();
+
+    float fButtonWidth = GetNuiScaleDimension(oPC, 60.0);
+    float fButtonHeight = GetNuiScaleDimension(oPC, 60.0);
 
     json jRow = JsonArray();
     json jButtonRight = NuiId(NuiButtonImage(JsonString("app_hand_right")), APP_WEAPON_RIGHT_HAND_BTN);
     jButtonRight = NuiEnabled(jButtonRight, NuiBind(APP_WEAPON_RIGHT_HAND_BTN_ENABLED));
     jButtonRight = NuiEncouraged(jButtonRight, NuiBind(APP_WEAPON_RIGHT_HAND_BTN_ENCOURAGED));
     jButtonRight = NuiTooltip(jButtonRight, JsonString("Right hand"));
-    jButtonRight = NuiWidth(jButtonRight, 60.0);
-    jButtonRight = NuiHeight(jButtonRight, 60.0);
+    jButtonRight = NuiWidth(jButtonRight, fButtonWidth);
+    jButtonRight = NuiHeight(jButtonRight, fButtonHeight);
 
     json jButtonLeft = NuiId(NuiButtonImage(JsonString("app_hand_left")), APP_WEAPON_LEFT_HAND_BTN);
     jButtonLeft = NuiEnabled(jButtonLeft, NuiBind(APP_WEAPON_LEFT_HAND_BTN_ENABLED));
     jButtonLeft = NuiEncouraged(jButtonLeft, NuiBind(APP_WEAPON_LEFT_HAND_BTN_ENCOURAGED));
     jButtonLeft = NuiTooltip(jButtonLeft, JsonString("Left hand"));
-    jButtonLeft = NuiWidth(jButtonLeft, 60.0);
-    jButtonLeft = NuiHeight(jButtonLeft, 60.0);
+    jButtonLeft = NuiWidth(jButtonLeft, fButtonWidth);
+    jButtonLeft = NuiHeight(jButtonLeft, fButtonHeight);
 
     jRow = JsonArrayInsert(jRow, jSpacer);
     jRow = JsonArrayInsert(jRow, jButtonRight);
@@ -133,7 +136,7 @@ void AppWeaponSwapLayout(
                 struct ModelInfo ModelInfo = GetModelInfo(oWeapon, RESTYPE_TGA);
 
                 NuiSetGroupLayout(oPC, nToken, APP_ITEM_SWAP_LAYOUT,
-                    CreateAppItem1PartModel(ModelInfo));
+                    CreateAppItem1PartModel(oPC, ModelInfo));
 
                 FeedItem1Part(oPC, nToken, oWeapon, ModelInfo);
 
@@ -145,7 +148,7 @@ void AppWeaponSwapLayout(
                 OffWatch3PartModels(oPC, nToken);
                 NuiSetBindWatch(oPC, nToken, APP_ITEM_ID, FALSE);
 
-                NuiSetGroupLayout(oPC, nToken, APP_ITEM_SWAP_LAYOUT, CreateAppItem3PartModels());
+                NuiSetGroupLayout(oPC, nToken, APP_ITEM_SWAP_LAYOUT, CreateAppItem3PartModels(oPC));
                 FeedItem3PartModels(oPC, oWeapon, nToken, nBaseType);
                 OnWatch3PartModels(oPC, nToken);
             }
@@ -186,12 +189,12 @@ void CreateAppWeaponWindow(object oPC)
     json jSpacer = NuiSpacer();
 
     json jCol = JsonArray();
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateTopSpacer(60.0));
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName("Weapon"));
-    jCol = JsonArrayInsert(jCol, CreateAppWeaponButtons());
-    jCol = JsonArrayInsert(jCol, CreateAppItemSwapLayout());
-    jCol = JsonArrayInsert(jCol, NuiHeight(jSpacer, 10.0));
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateButtonPanel());
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateTopSpacer(GetNuiScaleDimension(oPC, 60.0)));
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName(oPC, "Weapon"));
+    jCol = JsonArrayInsert(jCol, CreateAppWeaponButtons(oPC));
+    jCol = JsonArrayInsert(jCol, CreateAppItemSwapLayout(oPC));
+    jCol = JsonArrayInsert(jCol, NuiHeight(jSpacer, GetNuiScaleDimension(oPC, 10.0)));
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateButtonPanel(oPC));
     jCol = JsonArrayInsert(jCol, jSpacer);
 
     json jImageList = JsonArray();
@@ -201,8 +204,8 @@ void CreateAppWeaponWindow(object oPC)
         NuiRect(
             0.0,
             15.0,
-            APP_BACKGROUND_IMAGE_WIDTH,
-            610.0),
+            GetNuiScaleDimension(oPC, APP_BACKGROUND_IMAGE_WIDTH),
+            GetNuiScaleDimension(oPC, 610.0)),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
@@ -277,7 +280,7 @@ void AppWeapon3PartModelsWatchEvents(
 }
 
 void AppWeaponCopy(
-    object oSource, 
+    object oSource,
     object oTarget)
 {
     object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oSource);
@@ -492,7 +495,7 @@ void AppWeaponEvents(
 
             int nTokenPanel = NuiFindWindow(oPC, APP_RIGHT_PANEL_WINDOW);
             AppRightPanelOffEncouraged(oPC, nTokenPanel);
-        }        
+        }
     }
     else if(sEventType == EVENT_TYPE_WATCH)
     {

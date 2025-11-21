@@ -30,7 +30,7 @@ void AppMiscSwapLayout(
                 struct ModelInfo ModelInfo = GetModelInfo(oItem, RESTYPE_TGA);
 
                 NuiSetGroupLayout(oPC, nToken, APP_ITEM_SWAP_LAYOUT,
-                   CreateAppItem1PartModel(ModelInfo));
+                   CreateAppItem1PartModel(oPC, ModelInfo));
 
                 FeedItem1Part(oPC, nToken, oItem, ModelInfo);
 
@@ -42,7 +42,7 @@ void AppMiscSwapLayout(
                 OffWatch3PartModels(oPC, nToken);
                 NuiSetBindWatch(oPC, nToken, APP_ITEM_ID, FALSE);
 
-                NuiSetGroupLayout(oPC, nToken, APP_ITEM_SWAP_LAYOUT, CreateAppItem3PartModels());
+                NuiSetGroupLayout(oPC, nToken, APP_ITEM_SWAP_LAYOUT, CreateAppItem3PartModels(oPC));
                 FeedItem3PartModels(oPC, oItem, nToken, nBaseType, "i", RESTYPE_TGA);
                 OnWatch3PartModels(oPC, nToken);
             }
@@ -52,23 +52,26 @@ void AppMiscSwapLayout(
     NuiSetBind(oPC, nToken, APP_MISC_ITEM_UUID, JsonString(sItemUUID));
 }
 
-json CreateAppItemName()
+json CreateAppItemName(object oPC)
 {
     json jSpacer = NuiSpacer();
+    
+    float fButtonHeight = GetNuiScaleDimension(oPC, APP_BOTTOM_BTN_HEIGHT);
+    float fButtonWidth = GetNuiScaleDimension(oPC, APP_BOTTOM_BTN_WIDTH);
 
     json jTextEdit = NuiTextEdit(
         JsonString(""),
         NuiBind(APP_ITEM_NAME),
         100,
         FALSE);
-    jTextEdit = NuiWidth(jTextEdit, 200.0);
-    jTextEdit = NuiHeight(jTextEdit, APP_BOTTOM_BTN_HEIGHT);
+    jTextEdit = NuiWidth(jTextEdit, GetNuiScaleDimension(oPC, 200.0));
+    jTextEdit = NuiHeight(jTextEdit, fButtonHeight);
     jTextEdit = NuiEnabled(jTextEdit, NuiBind(APP_MISC_PICKED));
 
     json jButtonSave =
         NuiId(NuiButtonImage(JsonString("app_save")), APP_ITEM_NAME_SAVE_BTN);
-    jButtonSave = NuiWidth(jButtonSave, APP_BOTTOM_BTN_WIDTH);
-    jButtonSave = NuiHeight(jButtonSave, APP_BOTTOM_BTN_HEIGHT);
+    jButtonSave = NuiWidth(jButtonSave, fButtonWidth);
+    jButtonSave = NuiHeight(jButtonSave, fButtonHeight);
     jButtonSave = NuiEnabled(jButtonSave, NuiBind(APP_MISC_PICKED));
 
     json jRow = JsonArray();
@@ -80,14 +83,14 @@ json CreateAppItemName()
     return NuiRow(jRow);
 }
 
-json CreateAppMiscButton()
+json CreateAppMiscButton(object oPC)
 {
     json jSpacer = NuiSpacer();
 
     json jButtonPick = NuiButtonImage(JsonString("custom_pick_nui"));
     jButtonPick = NuiId(jButtonPick, APP_MISC_PICK_BTN);
-    jButtonPick = NuiWidth(jButtonPick, APP_BOTTOM_BTN_WIDTH);
-    jButtonPick = NuiHeight(jButtonPick, APP_BOTTOM_BTN_HEIGHT);
+    jButtonPick = NuiWidth(jButtonPick, GetNuiScaleDimension(oPC, APP_BOTTOM_BTN_WIDTH));
+    jButtonPick = NuiHeight(jButtonPick, GetNuiScaleDimension(oPC, APP_BOTTOM_BTN_HEIGHT));
 
     json jRow = JsonArray();
     jRow = JsonArrayInsert(jRow, jSpacer);
@@ -103,11 +106,11 @@ void CreateAppMiscWindow(object oPC)
 
     json jCol = JsonArray();
     jCol = JsonArrayInsert(jCol, CreateAppColorTemplateTopSpacer(60.0));
-    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName("Misc"));
-    jCol = JsonArrayInsert(jCol, CreateAppItemName());
-    jCol = JsonArrayInsert(jCol, CreateAppItemSwapLayout());
-    jCol = JsonArrayInsert(jCol, NuiHeight(jSpacer, 10.0));
-    jCol = JsonArrayInsert(jCol, CreateAppMiscButton());
+    jCol = JsonArrayInsert(jCol, CreateAppColorTemplateLabelName(oPC, "Misc"));
+    jCol = JsonArrayInsert(jCol, CreateAppItemName(oPC));
+    jCol = JsonArrayInsert(jCol, CreateAppItemSwapLayout(oPC));
+    jCol = JsonArrayInsert(jCol, NuiHeight(jSpacer, GetNuiScaleDimension(oPC, 10.0)));
+    jCol = JsonArrayInsert(jCol, CreateAppMiscButton(oPC));
     jCol = JsonArrayInsert(jCol, jSpacer);
 
     json jImageList = JsonArray();
@@ -117,8 +120,8 @@ void CreateAppMiscWindow(object oPC)
         NuiRect(
             0.0,
             15.0,
-            APP_BACKGROUND_IMAGE_WIDTH,
-            610.0),
+            GetNuiScaleDimension(oPC, APP_BACKGROUND_IMAGE_WIDTH),
+            GetNuiScaleDimension(oPC, 625.0)),
         JsonInt(NUI_ASPECT_STRETCH),
         JsonInt(NUI_HALIGN_LEFT),
         JsonInt(NUI_VALIGN_TOP),
