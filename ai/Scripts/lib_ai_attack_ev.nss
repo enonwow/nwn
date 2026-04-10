@@ -1,29 +1,30 @@
 #include "lib_ai_attack"
 
+object oPC         = NuiGetEventPlayer();
+string sEventType  = NuiGetEventType();
+int    nToken      = NuiGetEventWindow();
+string sEventElem  = NuiGetEventElement();
+string sWindowId   = NuiGetWindowId(oPC, nToken);
+
 void main()
 {
-    object oPC = OBJECT_SELF;
-
-    if(JsonGetString(GetEventData().event) != EVENT_TYPE_CLICK)
+    if(sWindowId != AI_ATTACK_WINDOW)
     {
         return;
     }
 
-    int nToken = NuiFindWindow(oPC, AI_ATTACK_WINDOW);
-    if(nToken <= 0)
+    if(sEventType != EVENT_TYPE_CLICK)
     {
         return;
     }
 
-    string sElement = JsonGetString(GetEventData().element);
-
-    if(sElement == AI_BTN_MAIN)
+    if(sEventElem == AI_BTN_MAIN)
     {
         AIAttackApplyBinds(oPC, nToken, AI_HAND_MAIN);
         return;
     }
 
-    if(sElement == AI_BTN_OFF)
+    if(sEventElem == AI_BTN_OFF)
     {
         if(JsonGetInt(NuiGetBind(oPC, nToken, AI_BIND_OFF_ENABLED)))
         {
