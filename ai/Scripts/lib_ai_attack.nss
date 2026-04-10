@@ -1,5 +1,6 @@
 #include "lib_nui"
 #include "x2_inc_itemprop"
+#include "nwnx_creature"
 
 const string AI_ATTACK_WINDOW = "AI_ATTACK_WINDOW";
 const string AI_ATTACK_EVENT_SCRIPT = "lib_ai_attack_ev";
@@ -150,42 +151,6 @@ int AIGetModifyAttacksEffectTotal(object oPC)
     return nTotal;
 }
 
-int AIGetDivinePowerExtraAttacks(object oPC)
-{
-    effect eEffect = GetFirstEffect(oPC);
-    while(GetIsEffectValid(eEffect))
-    {
-        if(GetEffectSpellId(eEffect) == SPELL_DIVINE_POWER)
-        {
-            int nLevel = GetHitDice(oPC);
-            int nFighterBAB = nLevel;
-            if(nFighterBAB > 20)
-            {
-                nFighterBAB = 20;
-            }
-
-            int nCurrentBAB = GetBaseAttackBonus(oPC);
-            if(nCurrentBAB > 20)
-            {
-                nCurrentBAB = 20;
-            }
-
-            int nFighterMainCount = 1 + (nFighterBAB >= 6) + (nFighterBAB >= 11) + (nFighterBAB >= 16);
-            int nCurrentMainCount = 1 + (nCurrentBAB >= 6) + (nCurrentBAB >= 11) + (nCurrentBAB >= 16);
-            int nExtra = nFighterMainCount - nCurrentMainCount;
-
-            if(nExtra > 0)
-            {
-                return nExtra;
-            }
-            return 0;
-        }
-        eEffect = GetNextEffect(oPC);
-    }
-
-    return 0;
-}
-
 int AIGetMainBABCap20(object oPC)
 {
     int nBAB = GetBaseAttackBonus(oPC);
@@ -208,7 +173,7 @@ int AIUseMonkUBAB(object oPC)
     object oOff = GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oPC);
     object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST, oPC);
 
-    int bUnarmedOrKama = !GetIsObjectValid(oMain) || AIIsMonkWeapon(oMain) || GetBaseItemType(oMain) == BASE_ITEM_KAMA;
+    int bUnarmedOrKama = !GetIsObjectValid(oMain) || AIIsMonkWeapon(oMain);
     int bNoShield = !AIIsShield(oOff);
     int bNoArmor = !GetIsObjectValid(oArmor);
 
@@ -347,21 +312,6 @@ int AIGetPowerAttackDamageBonus(object oPC)
     return 0;
 }
 
-int AIGetPowerAttackABPenalty(object oPC)
-{
-    if(GetActionMode(oPC, ACTION_MODE_IMPROVED_POWER_ATTACK))
-    {
-        return -10;
-    }
-
-    if(GetActionMode(oPC, ACTION_MODE_POWER_ATTACK))
-    {
-        return -5;
-    }
-
-    return 0;
-}
-
 string AIAttackGetWeaponLabel(object oItem, string sFallback)
 {
     if(!GetIsObjectValid(oItem))
@@ -382,20 +332,26 @@ string AIJoinAttackLine(string sCurrent, int nBonus)
     return sCurrent + IntToString(nBonus);
 }
 
+int AIGetCurrentHighestAB(object oPC, int bOffhand)
+{
+    object oMain = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oPC);
+    int bMelee = !AIIsRangedWeapon(oMain);
+
+    return NWNX_Creature_GetAttackBonus(
+        oPC,
+        bMelee,
+        FALSE,
+        bOffhand,
+        TRUE);
+}
+
 string AIBuildMainProgression(object oPC)
 {
     object oMain = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oPC);
 
-    int nBAB = AIGetMainBABCap20(oPC);
-    int nStrAB = GetAbilityModifier(ABILITY_STRENGTH, oPC);
     int nCount = AIGetMainAttackCount(oPC);
 
-    if(AIIsRangedWeapon(oMain))
-    {
-        nStrAB = 0;
-    }
-
-    int nAB = nBAB + nStrAB + AIGetMainPenalty(oPC) + AIGetPowerAttackABPenalty(oPC);
+    int nAB = AIGetCurrentHighestAB(oPC, FALSE);
 
     string sList = "";
     int i;
@@ -426,9 +382,7 @@ string AIBuildOffProgression(object oPC)
         return "Brak ataków offhand.";
     }
 
-    int nBAB = AIGetMainBABCap20(oPC);
-    int nStrAB = GetAbilityModifier(ABILITY_STRENGTH, oPC);
-    int nAB = nBAB + nStrAB + AIGetOffPenalty(oPC) + AIGetPowerAttackABPenalty(oPC);
+    int nAB = AIGetCurrentHighestAB(oPC, TRUE);
 
     string sList = "";
     int i;
@@ -469,15 +423,8 @@ string AIBuildFreeAttackList(object oPC)
         }
     }
 
-    int nDivinePowerExtra = AIGetDivinePowerExtraAttacks(oPC);
-    int i;
-    for(i = 0; i < nDivinePowerExtra; i++)
-    {
-        sList = AIJoinAttackLine(sList, nCurrent);
-        nCurrent -= 5;
-    }
-
     int nModifyAttacks = AIGetModifyAttacksEffectTotal(oPC);
+    int i;
     for(i = 0; i < nModifyAttacks; i++)
     {
         sList = AIJoinAttackLine(sList, nCurrent);
@@ -561,7 +508,7 @@ void AIAttackApplyBinds(object oPC, int nToken, int nMode)
     NuiSetBind(oPC, nToken, AI_BIND_OFF_ENABLED, JsonBool(bOffEnabled));
 
     NuiSetBind(oPC, nToken, AI_BIND_EXTRA_INFO,
-        JsonString("Free attacks: haste/divine/modify/flurry/rapid/cleave"));
+        JsonString("Free attacks: haste/modify(fl divine)/flurry/rapid/cleave"));
     NuiSetBind(oPC, nToken, AI_BIND_EXTRA_LIST,
         JsonString(AIBuildFreeAttackList(oPC)));
 
