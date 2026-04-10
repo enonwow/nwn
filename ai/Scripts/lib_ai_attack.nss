@@ -614,77 +614,99 @@ void AIAttackApplyBinds(object oPC, int nToken, int nMode)
 json AIAttackRoot()
 {
     json jCol = JsonArray();
-
     json jRowA = JsonArray();
-    jRowA = JsonArrayInsert(jRowA, NuiLabel(NuiBind(AI_BIND_MAIN_NAME), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
-    jRowA = JsonArrayInsert(jRowA, NuiLabel(JsonString("label"), NUI_HALIGN_RIGHT, NUI_VALIGN_MIDDLE));
+    json jRowB = JsonArray();
+    json jRowC = JsonArray();
+    json jRowD = JsonArray();
+    json jRowE = JsonArray();
+    json jRowF = JsonArray();
+    json jRowG = JsonArray();
+    json jRowH = JsonArray();
+    json jCellRow = JsonArray();
+    json jTemplate = JsonArray();
+    json jSwitch = JsonArray();
+
+    json jLblMainName = NuiLabel(NuiBind(AI_BIND_MAIN_NAME), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblMainInfo = NuiLabel(NuiBind(AI_BIND_MAIN_INFO), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblExtraTitle = NuiLabel(JsonString("Wyliczenie extra ataków"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblExtraInfo = NuiLabel(NuiBind(AI_BIND_EXTRA_INFO), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblOffName = NuiLabel(NuiBind(AI_BIND_OFF_NAME), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblOffInfo = NuiLabel(NuiBind(AI_BIND_OFF_INFO), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblOffDisabled = NuiLabel(JsonString("offhand disabled gdy brak broni"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblDmgTitle = NuiLabel(JsonString("Obrażenia:"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblDmgSummary = NuiLabel(NuiBind(AI_BIND_DMG_SUMMARY), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jLblAtkTitle = NuiLabel(JsonString("Lista bonusów ataku"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_TOP));
+    json jLblAtkList = NuiLabel(NuiBind(AI_BIND_ATTACK_BONUS_LIST), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_TOP));
+    json jLblDmgBonusTitle = NuiLabel(JsonString("Lista bonusów obrażeń"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_TOP));
+    json jLblDmgBonusList = NuiLabel(NuiBind(AI_BIND_DAMAGE_BONUS_LIST), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_TOP));
+
+    json jBtnMain = NuiButton(JsonString("mainhand"));
+    json jBtnOff = NuiButton(JsonString("offhand"));
+
+    json jIcon = NuiButtonImage(NuiBind(AI_BIND_FREE_ICONS));
+    json jName = NuiLabel(NuiBind(AI_BIND_FREE_NAMES), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jCount = NuiLabel(NuiBind(AI_BIND_FREE_COUNTS), JsonInt(NUI_HALIGN_RIGHT), JsonInt(NUI_VALIGN_MIDDLE));
+    json jCell = JsonNull();
+    json jList = JsonNull();
+
+    jRowA = JsonArrayInsert(jRowA, jLblMainName);
+    jRowA = JsonArrayInsert(jRowA, jLblMainInfo);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowA));
 
-    json jRowB = JsonArray();
-    jRowB = JsonArrayInsert(jRowB, NuiLabel(JsonString("Informacja BAB/UBAB"), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
-    jRowB = JsonArrayInsert(jRowB, NuiLabel(NuiBind(AI_BIND_MAIN_INFO), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
+    jCol = JsonArrayInsert(jCol, NuiSpacer());
+
+    jRowB = JsonArrayInsert(jRowB, NuiLabel(JsonString("Informacja BAB/UBAB"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE)));
+    jRowB = JsonArrayInsert(jRowB, jLblMainInfo);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowB));
 
     jCol = JsonArrayInsert(jCol, NuiSpacer());
 
-    json jRowC = JsonArray();
-    jRowC = JsonArrayInsert(jRowC, NuiLabel(JsonString("Wyliczenie extra ataków"), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
-    jRowC = JsonArrayInsert(jRowC, NuiLabel(NuiBind(AI_BIND_EXTRA_INFO), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
+    jRowC = JsonArrayInsert(jRowC, jLblExtraTitle);
+    jRowC = JsonArrayInsert(jRowC, jLblExtraInfo);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowC));
 
-    json jName = NuiLabel(NuiBind(AI_BIND_FREE_NAMES), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE);
-    json jCount = NuiLabel(NuiBind(AI_BIND_FREE_COUNTS), NUI_HALIGN_RIGHT, NUI_VALIGN_MIDDLE);
+    jIcon = NuiWidth(jIcon, 24.0);
     jCount = NuiWidth(jCount, 60.0);
-    json jCellRow = JsonArray();
+    jCellRow = JsonArrayInsert(jCellRow, jIcon);
     jCellRow = JsonArrayInsert(jCellRow, jName);
     jCellRow = JsonArrayInsert(jCellRow, jCount);
-    json jCell = NuiListTemplateCell(NuiRow(jCellRow), 0.0, TRUE);
-    json jTemplate = JsonArray();
+    jCell = NuiListTemplateCell(NuiRow(jCellRow), 0.0, TRUE);
     jTemplate = JsonArrayInsert(jTemplate, jCell);
-    json jList = NuiList(jTemplate, NuiBind(AI_BIND_FREE_LENGTH), 34.0, FALSE, NUI_SCROLLBARS_AUTO);
+    jList = NuiList(jTemplate, NuiBind(AI_BIND_FREE_LENGTH), 34.0, FALSE, NUI_SCROLLBARS_Y);
 
-    json jRowD = JsonArray();
-    jRowD = JsonArrayInsert(jRowD, NuiLabel(JsonString("Lista extra ataków"), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
+    jRowD = JsonArrayInsert(jRowD, NuiLabel(JsonString("Lista extra ataków"), JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_TOP)));
     jRowD = JsonArrayInsert(jRowD, jList);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowD));
 
     jCol = JsonArrayInsert(jCol, NuiSpacer());
 
-    json jRowE = JsonArray();
-    jRowE = JsonArrayInsert(jRowE, NuiLabel(NuiBind(AI_BIND_OFF_NAME), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
-    jRowE = JsonArrayInsert(jRowE, NuiLabel(NuiBind(AI_BIND_OFF_INFO), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
+    jRowE = JsonArrayInsert(jRowE, jLblOffName);
+    jRowE = JsonArrayInsert(jRowE, jLblOffInfo);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowE));
 
     jCol = JsonArrayInsert(jCol, NuiSpacer());
 
-    json jBtnMain = NuiButton(JsonString("mainhand"));
     jBtnMain = NuiId(jBtnMain, AI_BTN_MAIN);
-
-    json jBtnOff = NuiButton(JsonString("offhand"));
     jBtnOff = NuiId(jBtnOff, AI_BTN_OFF);
     jBtnOff = NuiEnabled(jBtnOff, NuiBind(AI_BIND_OFF_ENABLED));
 
-    json jSwitch = JsonArray();
     jSwitch = JsonArrayInsert(jSwitch, jBtnMain);
     jSwitch = JsonArrayInsert(jSwitch, jBtnOff);
-    jSwitch = JsonArrayInsert(jSwitch, NuiLabel(JsonString("offhand disabled gdy brak broni"), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
+    jSwitch = JsonArrayInsert(jSwitch, jLblOffDisabled);
     jCol = JsonArrayInsert(jCol, NuiRow(jSwitch));
 
     jCol = JsonArrayInsert(jCol, NuiSpacer());
 
-    json jRowF = JsonArray();
-    jRowF = JsonArrayInsert(jRowF, NuiLabel(JsonString("Obrażenia:"), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
-    jRowF = JsonArrayInsert(jRowF, NuiLabel(NuiBind(AI_BIND_DMG_SUMMARY), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
+    jRowF = JsonArrayInsert(jRowF, jLblDmgTitle);
+    jRowF = JsonArrayInsert(jRowF, jLblDmgSummary);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowF));
 
-    json jRowG = JsonArray();
-    jRowG = JsonArrayInsert(jRowG, NuiLabel(JsonString("Lista bonusów ataku"), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
-    jRowG = JsonArrayInsert(jRowG, NuiLabel(NuiBind(AI_BIND_ATTACK_BONUS_LIST), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
+    jRowG = JsonArrayInsert(jRowG, jLblAtkTitle);
+    jRowG = JsonArrayInsert(jRowG, jLblAtkList);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowG));
 
-    json jRowH = JsonArray();
-    jRowH = JsonArrayInsert(jRowH, NuiLabel(JsonString("Lista bonusów obrażeń"), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
-    jRowH = JsonArrayInsert(jRowH, NuiLabel(NuiBind(AI_BIND_DAMAGE_BONUS_LIST), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
+    jRowH = JsonArrayInsert(jRowH, jLblDmgBonusTitle);
+    jRowH = JsonArrayInsert(jRowH, jLblDmgBonusList);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowH));
 
     return NuiCol(jCol);
