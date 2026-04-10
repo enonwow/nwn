@@ -21,6 +21,10 @@ const string AI_BIND_OFF_ENABLED = "AI_BIND_OFF_ENABLED";
 const string AI_BIND_DMG_SUMMARY = "AI_BIND_DMG_SUMMARY";
 const string AI_BIND_ATTACK_BONUS_LIST = "AI_BIND_ATTACK_BONUS_LIST";
 const string AI_BIND_DAMAGE_BONUS_LIST = "AI_BIND_DAMAGE_BONUS_LIST";
+const string AI_BIND_FREE_ICONS = "AI_BIND_FREE_ICONS";
+const string AI_BIND_FREE_NAMES = "AI_BIND_FREE_NAMES";
+const string AI_BIND_FREE_COUNTS = "AI_BIND_FREE_COUNTS";
+const string AI_BIND_FREE_LENGTH = "AI_BIND_FREE_LENGTH";
 
 int AIGetBaseItemColumnInt(object oItem, string sColumn)
 {
@@ -152,19 +156,13 @@ int AIHasHaste(object oPC)
         eEffect = GetNextEffect(oPC);
     }
 
-    if(AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_BOOTS, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_CHEST, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_HEAD, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_CLOAK, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_LEFTRING, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_RIGHTRING, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_AMULET, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_ARMS, oPC))
-    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_BELT, oPC)))
+    int nSlot;
+    for(nSlot = 0; nSlot < NUM_INVENTORY_SLOTS; nSlot++)
     {
-        return TRUE;
+        if(AIItemHasHaste(GetItemInSlot(nSlot, oPC)))
+        {
+            return TRUE;
+        }
     }
 
     return FALSE;
@@ -218,24 +216,12 @@ int AIUseMonkUBAB(object oPC)
 
 int AIGetMainAttackCount(object oPC)
 {
-    int nBAB = AIGetMainBABCap20(oPC);
-
-    if(AIUseMonkUBAB(oPC))
+    int nCount = GetAttacksPerRound(oPC, FALSE);
+    if(nCount < 1)
     {
-        if(nBAB < 4)
-        {
-            return 1;
-        }
-
-        int nCount = 2 + ((nBAB - 4) / 3);
-        if(nCount > 6)
-        {
-            nCount = 6;
-        }
-        return nCount;
+        nCount = 1;
     }
-
-    return 1 + (nBAB >= 6) + (nBAB >= 11) + (nBAB >= 16);
+    return nCount;
 }
 
 int AIGetMainPenalty(object oPC)
@@ -248,14 +234,8 @@ int AIGetMainPenalty(object oPC)
 
     int nPenaltyMain = -6;
 
-    int bAmbi = GetHasFeat(FEAT_AMBIDEXTERITY, oPC);
     int bTWF = GetHasFeat(FEAT_TWO_WEAPON_FIGHTING, oPC);
     int bLight = AIIsLightWeaponForCreature(oPC, oOff);
-
-    if(bAmbi)
-    {
-        // Ambidexterity alone reduces only off-hand penalty.
-    }
 
     if(bTWF)
     {
@@ -300,19 +280,11 @@ int AIGetOffPenalty(object oPC)
 
 int AIGetOffAttackCount(object oPC)
 {
-    object oOff = GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oPC);
-    if(!AIIsOffhandWeapon(oOff))
+    int nCount = GetAttacksPerRound(oPC, TRUE);
+    if(nCount < 0)
     {
-        return 0;
+        nCount = 0;
     }
-
-    int nCount = 1;
-
-    if(GetHasFeat(FEAT_IMPROVED_TWO_WEAPON_FIGHTING, oPC))
-    {
-        nCount += 1;
-    }
-
     return nCount;
 }
 
@@ -485,6 +457,80 @@ string AIBuildFreeAttackList(object oPC)
     return sList;
 }
 
+int AIAttackGetEffectIconRow(effect e)
+{
+    int nType = GetEffectType(e);
+    if(nType == EFFECT_TYPE_HASTE) return 25;
+    if(nType == EFFECT_TYPE_MODIFY_ATTACKS) return 29;
+    if(nType == EFFECT_TYPE_ATTACK_INCREASE) return 29;
+    if(nType == EFFECT_TYPE_ATTACK_DECREASE) return 30;
+    if(nType == EFFECT_TYPE_DAMAGE_INCREASE) return 31;
+    if(nType == EFFECT_TYPE_DAMAGE_DECREASE) return 32;
+    return -1;
+}
+
+void AIBuildFreeAttacksFeed(
+    object oPC,
+    int nToken)
+{
+    json jIcons = JsonArray();
+    json jNames = JsonArray();
+    json jCounts = JsonArray();
+
+    int bHasteAdded = FALSE;
+
+    if(AIHasHaste(oPC))
+    {
+        jIcons = JsonArrayInsert(jIcons, JsonString("ir_fx_haste"));
+        jNames = JsonArrayInsert(jNames, JsonString("Haste"));
+        jCounts = JsonArrayInsert(jCounts, JsonString("+1"));
+        bHasteAdded = TRUE;
+    }
+
+    effect e = GetFirstEffect(oPC);
+    while(GetIsEffectValid(e))
+    {
+        int nType = GetEffectType(e);
+        if(nType == EFFECT_TYPE_HASTE && bHasteAdded)
+        {
+            e = GetNextEffect(oPC);
+            continue;
+        }
+
+        if(nType == EFFECT_TYPE_MODIFY_ATTACKS || nType == EFFECT_TYPE_ATTACK_INCREASE || nType == EFFECT_TYPE_ATTACK_DECREASE)
+        {
+            int nIconRow = AIAttackGetEffectIconRow(e);
+            string sIcon = nIconRow >= 0 ? Get2DAString("effecticon", "IconResRef", nIconRow) : "";
+            if(sIcon == "****")
+            {
+                sIcon = "";
+            }
+
+            string sName = nIconRow >= 0 ? Get2DAString("effecticon", "Label", nIconRow) : "Effect";
+            if(sName == "****")
+            {
+                sName = "Effect";
+            }
+
+            int nValue = 1;
+            if(nType == EFFECT_TYPE_MODIFY_ATTACKS)
+            {
+                nValue = GetEffectInteger(e, 0);
+            }
+
+            jIcons = JsonArrayInsert(jIcons, JsonString(sIcon));
+            jNames = JsonArrayInsert(jNames, JsonString(sName));
+            jCounts = JsonArrayInsert(jCounts, JsonString(IntToString(nValue)));
+        }
+
+        e = GetNextEffect(oPC);
+    }
+    NuiSetBind(oPC, nToken, AI_BIND_FREE_ICONS, jIcons);
+    NuiSetBind(oPC, nToken, AI_BIND_FREE_NAMES, jNames);
+    NuiSetBind(oPC, nToken, AI_BIND_FREE_COUNTS, jCounts);
+    NuiSetBind(oPC, nToken, AI_BIND_FREE_LENGTH, JsonInt(JsonGetLength(jNames)));
+}
+
 string AIBuildDamageBonusList(object oPC, int nMode)
 {
     object oMain = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oPC);
@@ -508,10 +554,9 @@ string AIBuildDamageBonusList(object oPC, int nMode)
 
 string AIBuildMainInfo(object oPC)
 {
-    int nBAB = AIGetMainBABCap20(oPC);
     int bUBAB = AIUseMonkUBAB(oPC);
 
-    return "BAB: " + IntToString(nBAB)
+    return "AB: " + AIBuildMainProgression(oPC)
         + " | UBAB: " + (bUBAB ? "TAK" : "NIE")
         + " | Kara dual(main): " + IntToString(AIGetMainPenalty(oPC));
 }
@@ -522,7 +567,8 @@ string AIBuildOffInfo(object oPC)
 
     string sLight = AIIsLightWeaponForCreature(oPC, oOff) ? "TAK" : "NIE";
 
-    return "Kara dual(off): " + IntToString(AIGetOffPenalty(oPC))
+    return "AB: " + AIBuildOffProgression(oPC)
+        + " | Kara dual(off): " + IntToString(AIGetOffPenalty(oPC))
         + " | Lekka: " + sLight
         + " | Ataki: " + IntToString(AIGetOffAttackCount(oPC));
 }
@@ -547,6 +593,8 @@ void AIAttackApplyBinds(object oPC, int nToken, int nMode)
         JsonString("Free attacks: haste/modify(fl divine)/flurry/rapid/cleave"));
     NuiSetBind(oPC, nToken, AI_BIND_EXTRA_LIST,
         JsonString(AIBuildFreeAttackList(oPC)));
+
+    AIBuildFreeAttacksFeed(oPC, nToken);
 
     if(nMode == AI_HAND_OFF)
     {
@@ -584,9 +632,20 @@ json AIAttackRoot()
     jRowC = JsonArrayInsert(jRowC, NuiLabel(NuiBind(AI_BIND_EXTRA_INFO), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE));
     jCol = JsonArrayInsert(jCol, NuiRow(jRowC));
 
+    json jName = NuiLabel(NuiBind(AI_BIND_FREE_NAMES), NUI_HALIGN_LEFT, NUI_VALIGN_MIDDLE);
+    json jCount = NuiLabel(NuiBind(AI_BIND_FREE_COUNTS), NUI_HALIGN_RIGHT, NUI_VALIGN_MIDDLE);
+    jCount = NuiWidth(jCount, 60.0);
+    json jCellRow = JsonArray();
+    jCellRow = JsonArrayInsert(jCellRow, jName);
+    jCellRow = JsonArrayInsert(jCellRow, jCount);
+    json jCell = NuiListTemplateCell(NuiRow(jCellRow), 0.0, TRUE);
+    json jTemplate = JsonArray();
+    jTemplate = JsonArrayInsert(jTemplate, jCell);
+    json jList = NuiList(jTemplate, NuiBind(AI_BIND_FREE_LENGTH), 34.0, FALSE, NUI_SCROLLBARS_AUTO);
+
     json jRowD = JsonArray();
     jRowD = JsonArrayInsert(jRowD, NuiLabel(JsonString("Lista extra ataków"), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
-    jRowD = JsonArrayInsert(jRowD, NuiLabel(NuiBind(AI_BIND_EXTRA_LIST), NUI_HALIGN_LEFT, NUI_VALIGN_TOP));
+    jRowD = JsonArrayInsert(jRowD, jList);
     jCol = JsonArrayInsert(jCol, NuiRow(jRowD));
 
     jCol = JsonArrayInsert(jCol, NuiSpacer());
