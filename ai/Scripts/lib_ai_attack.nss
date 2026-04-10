@@ -668,7 +668,7 @@ void CreateAIAttackWindow(object oPC)
         NuiBind(WINDOW_TRANSPARENT),
         NuiBind(WINDOW_BORDER));
 
-    nToken = NuiCreate(oPC, jNui, AI_ATTACK_WINDOW);
+    nToken = NuiCreate(oPC, jNui, AI_ATTACK_WINDOW, AI_ATTACK_EVENT_SCRIPT);
 
     NuiSetBind(oPC, nToken, WINDOW_TITLE, JsonString("Attack View"));
     NuiSetBind(oPC, nToken, WINDOW_GEOMETRY, NuiRect(80.0, 40.0, 1250.0, 900.0));
@@ -678,6 +678,4 @@ void CreateAIAttackWindow(object oPC)
     NuiSetBind(oPC, nToken, WINDOW_BORDER, JsonBool(TRUE));
 
     AIAttackApplyBinds(oPC, nToken, AI_HAND_MAIN);
-
-    SetEventScript(oPC, EVENT_SCRIPT_NUI, AI_ATTACK_EVENT_SCRIPT);
 }
