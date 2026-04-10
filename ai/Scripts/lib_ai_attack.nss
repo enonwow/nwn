@@ -119,6 +119,27 @@ int AIIsOffhandWeapon(object oOffhand)
     return TRUE;
 }
 
+int AIItemHasHaste(object oItem)
+{
+    if(!GetIsObjectValid(oItem))
+    {
+        return FALSE;
+    }
+
+    itemproperty ip = GetFirstItemProperty(oItem);
+    while(GetIsItemPropertyValid(ip))
+    {
+        if(GetItemPropertyType(ip) == ITEM_PROPERTY_HASTE)
+        {
+            return TRUE;
+        }
+
+        ip = GetNextItemProperty(oItem);
+    }
+
+    return FALSE;
+}
+
 int AIHasHaste(object oPC)
 {
     effect eEffect = GetFirstEffect(oPC);
@@ -129,6 +150,21 @@ int AIHasHaste(object oPC)
             return TRUE;
         }
         eEffect = GetNextEffect(oPC);
+    }
+
+    if(AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_BOOTS, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_CHEST, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_HEAD, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_CLOAK, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_LEFTRING, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_RIGHTRING, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_AMULET, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_LEFTHAND, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_ARMS, oPC))
+    || AIItemHasHaste(GetItemInSlot(INVENTORY_SLOT_BELT, oPC)))
+    {
+        return TRUE;
     }
 
     return FALSE;
