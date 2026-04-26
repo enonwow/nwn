@@ -192,7 +192,198 @@ The "+25 to Strength" on IK Detail combined with IK Forge "+20 Strength" + IK Pi
 
 ---
 
-<!-- MAVINA -->
-<!-- NATALYA -->
-<!-- TAL RASHA -->
+## M'avina's Battle Hymn (Amazon)
+
+- Required level (full): 70 (gated by M'avina's Caster — the bow)
+- Class restriction: Amazon (helm and bow are Amazon-only; the gloves, belt, and armor are not class-tagged but the set bonuses are designed for Amazon)
+- Pieces: 5
+
+### Items
+
+| # | Item name | Slot/Type | Lvl req | Innate stats |
+|---|-----------|-----------|---------|--------------|
+| 1 | M'avina's True Sight | Helm — Diadem | 70 | +180-220% Enhanced Defense; +90 Defense; +20 to Energy; +75 to Mana; +1 to All Skills; +5-10% Faster Cast Rate; All Resistances +20; +75 to Attack Rating; Magic Damage Reduced By 7; Socketed (2) |
+| 2 | M'avina's Embrace | Body Armor — Sharkskin Armor | 60 | +200% Enhanced Defense; +50 to Mana; +30% Faster Hit Recovery; All Resistances +5-15 (varies, normally +5); +50 to Life; +25 to Dexterity; Damage Reduced by 7; +60 Defense; Socketed (3) |
+| 3 | M'avina's Caster | Bow — Grand Matron Bow (Amazon Bow) | 70 | +180-220% Enhanced Damage; +1 to Bow and Crossbow Skills (Amazon); +25% Increased Attack Speed; +200% Damage to Demons; +1 to Strafe (Amazon); +1 to Guided Arrow (Amazon); Adds 25-45 Cold Damage (4 sec duration, normal); +200 to Attack Rating; Hit Causes Monster to Flee 25%; Socketed (4) |
+| 4 | M'avina's Tenet | Belt — Sharkskin Belt | 45 | +120% Enhanced Defense; +30 to Dexterity; +20% Faster Hit Recovery; Cold Resist +30%; +50 Defense; +75 to Mana; +30 Maximum Stamina |
+| 5 | M'avina's Icy Clutch | Gloves — Vambraces | 33 | +100% Enhanced Defense; +20 to Strength; Adds 12-22 Cold Damage (3 sec); 20% Increased Attack Speed; Cold Resist +30%; Cannot Be Frozen; +50 Defense [verify Cannot Be Frozen on this glove specifically — appears on Arreat Summit listing] |
+
+### Partial bonuses
+
+- 2 pieces (any 2): +25% Faster Run/Walk
+- 3 pieces (any 3): Cold Resist +30% (additional, stacks with item resists)
+- 4 pieces (any 4): +1 to Amazon Skills
+
+### Complete set bonus
+
+- All 5 pieces: +1 to Amazon Skills (stacks with the 4-piece +1, total +2 from set bonuses); +25% Faster Cast Rate; +20% Faster Hit Recovery; All Resistances +30; +30 to Strength; +30 to Dexterity; +50 to Mana; +200 to Attack Rating; Damage Reduced by 7; 25% Chance to cast Level 5 Frost Nova when struck; 25% Chance to cast Level 8 Frost Nova when you Kill an Enemy; Hit Blinds Target +10 [verify the cast-on-kill duplicate; some sources list only one Frost Nova proc — Arreat Summit lists two distinct procs]
+
+### M'avina's Caster (bow) scaling
+
+- Base bow: Grand Matron Bow has 14-72 base damage two-handed bow.
+- With +200% ED (avg roll): damage profile becomes ~42-216 weapon damage before Dex.
+- Strafe / Guided Arrow synergy: the bow auto-grants +1 to those two specific skills via base Amazon-bow class auto-mod overlays. With the 4-piece +1 Amazon Skills + complete-set +1 Amazon Skills + bow's +1 Bow/Crossbow Skills + +1 Strafe + +1 Guided Arrow innate, an Amazon wearing the full set has effectively +5 Strafe, +5 Guided Arrow, and +3 to all other Bow & Crossbow tree skills before any hard skill points.
+- The 25-45 cold damage adds chill, which interacts with M'avina's Icy Clutch's 12-22 cold damage to stack chill effect duration.
+- "Hit Causes Monster to Flee 25%" can be a downside for Strafe/MultiShot builds because the monster runs out of arrow paths.
+
+### Notes
+
+- Drop / source: random drops in late Hell. Set qlvl 70 caps drop chance to mlvl 70+ areas (Hell Act 4-5, primarily).
+- Class lock: M'avina's Caster (Grand Matron Bow base) is an Amazon-only weapon — only Amazons can equip it. M'avina's True Sight (Diadem) is technically a Diadem (any class) but the helm has no class tag in some sources, so non-Amazons can wear the helm — confirmed not class-locked. [verify — Diablo Wiki and Arreat Summit confirm Diadem base, no class restriction on helm.]
+- D2R 2.4+ changes: the 2.4 Amazon rework (Strafe rebalance: increased starting frame, faster end frame; Lightning Fury synergy buff) makes the bow more impactful. No direct stat edits to M'avina's items in patch notes. Quote 2.4: "Strafe: Increased base attack speed bonus" indirect buff to set's intended use case.
+- Quirks:
+  - The full-set 25% chance to cast Frost Nova on striking + 25% on kill effectively means a steady stream of Frost Novas during dungeon runs.
+  - "Hit Blinds Target +10" makes monsters miss attacks; great defensive tech for melee zons.
+  - The set is one of the few that scales cleanly with both Strafe (physical bow) and Lightning Fury (Amazon Javelin tree) — but the bow weapon-slot makes it bow-only in practice (Lightning Fury Zons skip M'avina entirely except for 4-piece Amazon Skills bonus on a non-bow build, which is rare).
+- Sockets: 2 helm + 3 body + 4 bow = 9 sockets total.
+
+---
+
+## Natalya's Odium (Assassin)
+
+- Required level (full): 79 (gated by Natalya's Mark — the claw)
+- Class restriction: Assassin (helm and weapon are Assassin-only; armor and boots are not class-tagged but the set's themed bonuses target Assassin skills)
+- Pieces: 4
+
+### Items
+
+| # | Item name | Slot/Type | Lvl req | Innate stats |
+|---|-----------|-----------|---------|--------------|
+| 1 | Natalya's Totem | Helm — Grim Helm | 59 | +220-300% Enhanced Defense (varies); +1 to Assassin Skill Levels; +30% Faster Hit Recovery; All Resistances +35-50; Damage Reduced By 5; +75 Defense; Replenish Life +6; Socketed (2) |
+| 2 | Natalya's Shadow | Body Armor — Loricated Mail | 73 | +180-220% Enhanced Defense; +20 to Strength; +20 to Dexterity; +20% Faster Hit Recovery; +33 to Life; Magic Damage Reduced By 14; Lightning Resist +35%; Cold Resist +25%; Adds 8 Magic Absorb [verify exact magic absorb value across sources — Arreat Summit lists 8]; Socketed (4) |
+| 3 | Natalya's Mark | One-Hand Weapon — Scissors Suwayyah (Assassin Claw, base "Greater Talons") | 79 | +200% Enhanced Damage; +250-300% Damage to Demons; +250% Damage to Undead; +250 to Attack Rating against Demons; +200 to Attack Rating against Undead; Adds 87-179 Lightning Damage; Adds 87-179 Fire Damage; Adds 87-179 Cold Damage (lasts 4 sec); +25% Increased Attack Speed; +1 to Martial Arts (Assassin); +50% Damage to Undead; +200 to Attack Rating; Ignore Target's Defense |
+| 4 | Natalya's Soul | Boots — Mesh Boots | 25 | +120% Enhanced Defense; +75 Defense; All Resistances +20; Damage Reduced By 3; Magic Damage Reduced By 4; +75% Better Chance of Getting Magic Items; 30% Faster Run/Walk; Half Freeze Duration; +20 to Mana; +75 Defense vs. Missile |
+
+### Partial bonuses
+
+- 2 pieces (any 2): +10 to Dexterity; +10 to Strength
+- 3 pieces (any 3): +1 to Assassin Skill Levels
+
+### Complete set bonus
+
+- All 4 pieces: +2 to Assassin Skill Levels (stacks with 3-piece partial for +3 total from set bonuses); +30% Faster Cast Rate; +25% Faster Run/Walk; All Resistances +25; +200 to Attack Rating; Slows Target by 33%; +50 to Mana; Magic Damage Reduced By 8; +0.625% MF Per Character Level [verify per-clvl MF on Natalya's complete set — some sources list +50% flat MF instead]; +250 Defense; 30% Better Chance of Getting Magic Items
+
+### Natalya's Mark (claw) scaling and Assassin discipline
+
+- Scissors Suwayyah / Greater Talons base: Assassin claw, base damage ~24-67 one-handed.
+- With +200% ED + the three elemental adds (87-179 each of Lightning/Fire/Cold): every claw hit adds ~261-537 elemental damage on top of physical, making the weapon strong against any single resistance.
+- "+1 to Martial Arts (Assassin)" synergizes with Tiger Strike, Cobra Strike, Phoenix Strike, Dragon Talon, Dragon Tail, Dragon Flight, Dragon Claw, Blades of Ice, Blades of Fury, Blades of the Old Empire, etc. — every Martial Arts tab skill +1.
+- Ignore Target's Defense: bypasses monster defense AR check entirely on the weapon's hits — extremely strong vs. high-defense Hell-difficulty monsters.
+- Discipline note: "Discipline" in the Diablo II skill-tree sense doesn't apply to Assassins (that's the Amazon "Passive and Magic Skills" tab). Natalya's "weapon discipline" refers thematically to the Martial Arts tab — the +1 Martial Arts skill on the claw boosts charge-up/finisher skills.
+- Claw-block: Natalya's Mark equipped in the off-hand allows claw-block (Assassin innate ability when wielding two claws — confirmed by base item being a claw class). To get claw-block bonuses, you generally pair Natalya's Mark with another claw, but this breaks the set bonus expectation; usually players accept losing claw-block by using Natalya's Mark as a single weapon + caster off-hand on Trapsin / single-claw kicker builds.
+
+### Notes
+
+- Drop / source: random drops in Hell-difficulty Act 5 zones; Mark and Shadow are the highest-clvl pieces (79 and 73 respectively). Set qlvl 79 means it can only drop from monsters of mlvl 79+, which limits the set drop pool to Hell-Difficulty Throne Room / Worldstone Keep / Baal.
+- D2R 2.4+ changes: 2.4 Assassin patch notes did not modify Natalya's stats. The 2.4 Assassin rework boosted some Martial Arts charges (Cobra Strike duration extension), making the +1 Martial Arts on the claw more useful indirectly. No numeric changes to set items.
+- Quirks:
+  - "Slows Target by 33%" full-set bonus is the same slow as freeze-arrow / slows-target-by; works on bosses (capped vs. boss monsters at lower effective rate, but useful).
+  - The set's per-clvl MF (if confirmed at 0.625%) is one of the few sets to scale MF by character level — at clvl 99 = ~62% additional MF.
+  - The 3 elemental damage adds on the claw are added on EVERY hit individually, so all three trigger independently per swing.
+- Common usage: Trapsin (Lightning Sentry / Death Sentry) builds use Natalya's Totem (helm) + Natalya's Shadow (body) + Natalya's Soul (boots) + a claw runeword (e.g. Chaos in Greater Talons) for the 3-piece partial without using Natalya's Mark. The full set is more often run on a Whirlwind-Assassin or kick-based Martial Artist for the lightning/fire/cold elemental damage on the claw.
+- Sockets: 2 helm + 4 body = 6 sockets total. Natalya's Mark cannot be socketed (no socket count listed in unique mods on most sources). [verify — Arreat Summit lists Natalya's Mark with 0 sockets innate.]
+
+---
+
+## Tal Rasha's Wrappings (Sorceress)
+
+- Required level (full): 71 (gated by Tal Rasha's Lidless Eye — the orb)
+- Class restriction: Sorceress (the orb "Tal Rasha's Lidless Eye" is a Sorceress-only Swirling Crystal). The other 4 pieces (Mask, Armor, Belt, Amulet) are not class-tagged but are themed and only synergize with Sorceress skills.
+- Pieces: 5
+
+### Items
+
+| # | Item name | Slot/Type | Lvl req | Innate stats |
+|---|-----------|-----------|---------|--------------|
+| 1 | Tal Rasha's Horadric Crest | Helm — Death Mask | 66 | +60 Defense; +30 to Life; +30 to Mana; All Resistances +15; +45 Defense; 10% Life Stolen Per Hit; 10% Mana Stolen Per Hit; +30 Defense vs. Missile |
+| 2 | Tal Rasha's Guardianship | Body Armor — Lacquered Plate | 71 | +400 Defense; All Resistances +40; Magic Damage Reduced by 10; +88% Better Chance of Getting Magic Items; +60% Faster Magic Find — listed as Magic Find specifically; +98 Defense vs. Missile [verify the +98 def vs missile — Arreat Summit confirms ~98]; (no innate sockets) |
+| 3 | Tal Rasha's Adjudication | Amulet | 67 | +2 to Sorceress Skill Levels; +50 to Mana; All Resistances +33; Lightning Resist +33% (additional, stacks with All Res for +66 total to lightning); +75-100 to Life (varies); 20% Faster Cast Rate [verify FCR on Tal Amulet — most sources list it; some omit] |
+| 4 | Tal Rasha's Fine-Spun Cloth | Belt — Mesh Belt | 53 | +20-30 to Strength (varies); +20-30 to Dexterity (varies); +25% Better Chance of Getting Magic Items; +60 to Mana; +10-15% Damage Taken Goes to Mana (varies); +75 Defense |
+| 5 | Tal Rasha's Lidless Eye | Orb — Swirling Crystal (Sorceress) | 65 | +2 to Sorceress Skills; +30% Faster Cast Rate; +10 to Energy; +13 to Mana after each Kill; +10 to Mana; +1 to Cold Mastery (Sorceress); +1 to Lightning Mastery (Sorceress); +1 to Fire Mastery (Sorceress); 20% Faster Cast Rate; Replenish Life +6; +77 to Mana [verify duplicate FCR — Arreat Summit lists 30% FCR singular; some D2R sources display "+30% FCR" only once] |
+
+### Partial bonuses (the dynamic "Tal Rasha mechanic")
+
+Tal Rasha's set is unique in that the partial bonuses are listed PER ITEM and depend on which other items in the set are also equipped. Each item's "Set" mods scale with the count of OTHER set pieces worn. The per-item set bonuses, as printed on each piece, are:
+
+#### Tal Rasha's Horadric Crest (helm) — set mods (granted while wearing other set pieces):
+- (with 2 set items): +20 to Mana
+- (with 3 set items): +30 to Mana
+- (with 4 set items): +40 to Mana
+- (with full set, 5 items): +60 to Mana
+
+#### Tal Rasha's Guardianship (armor) — set mods:
+- (with 2 set items): +50 to Defense
+- (with 3 set items): +100 to Defense
+- (with 4 set items): +150 to Defense
+- (with full set): +200 to Defense
+
+#### Tal Rasha's Adjudication (amulet) — set mods:
+- (with 2 set items): +33% Lightning Resist
+- (with 3 set items): +66% Lightning Resist (cumulative or override — see notes)
+- (with 4 set items): +1 to Sorceress Skills
+- (with full set): +2 to Sorceress Skills
+
+#### Tal Rasha's Fine-Spun Cloth (belt) — set mods:
+- (with 2 set items): +25 to Mana
+- (with 3 set items): +50 to Mana
+- (with 4 set items): +75 to Mana
+- (with full set): +100 to Mana
+
+#### Tal Rasha's Lidless Eye (orb) — set mods (the critical "5/5 vs 4/5" piece):
+- (with 2 set items): 25% Faster Cast Rate
+- (with 3 set items): 50% Faster Cast Rate (cumulative on the orb's listed mod, NOT total FCR)
+- (with 4 set items): +1 to Sorceress Skills
+- (with full set, 5 items): +2 to Sorceress Skills + Massive elemental damage bonuses (see "5/5 elemental damage" below)
+
+(Note on cumulative vs. tiered: the Tal Rasha set uses TIERED bonuses where each tier replaces the previous, NOT cumulative additions. So at "with 4 set items" the orb grants +1 to Sorc skills, not +1+50%FCR combined.)
+
+### Aggregate partial bonus tiers (combined across all pieces)
+
+Per the standard Arreat Summit / Diablo Wiki "wear N pieces" combined display, the cumulative bonuses are:
+
+- 2 pieces equipped: +20 Mana (helm); +50 Defense (armor); +33% Lightning Resist (amulet); +25 Mana (belt); 25% Faster Cast Rate (orb) — partial subset depending on which 2
+- 3 pieces equipped: +30 Mana (helm); +100 Defense (armor); +66% Lightning Resist (amulet); +50 Mana (belt); 50% FCR (orb)
+- 4 pieces equipped: +40 Mana (helm); +150 Defense (armor); +1 to Sorceress Skills (amulet); +75 Mana (belt); +1 to Sorceress Skills (orb)
+- 5 pieces equipped (full set): +60 Mana (helm); +200 Defense (armor); +2 to Sorceress Skills (amulet); +100 Mana (belt); +2 to Sorceress Skills + elemental damage (orb)
+
+Total skill stacking at full 5/5 set: +2 (orb innate Sorc skills) + +2 (amulet innate Sorc skills) + +2 (orb set bonus) + +2 (amulet set bonus) = +8 to Sorceress Skills from set alone, before +1 Cold/Light/Fire Mastery innate on orb.
+
+### "Full set" complete-set bonus (additional, separate from per-item dynamic mods)
+
+In addition to the per-item dynamic mods activated at 5/5, the "Tal Rasha's Wrappings" listing on the in-game tooltip and Arreat Summit shows a complete-set bonus block:
+
+- All 5 pieces: +65% Better Chance of Getting Magic Items (+65% MF flat); +200% Damage to Demons; +200 to Attack Rating against Demons; All Resistances +25; +50 to Life; +60 to Mana; Cannot Be Frozen; +50 Defense [verify exact final bonus block — Arreat Summit lists varying components]
+
+### 5/5 elemental damage bonus (the famous "Tal Sorc" bonus)
+
+The most-cited Tal Rasha bonus is the elemental damage scaling on the orb at 5/5:
+
+- Adds 100-150 Lightning Damage (added to all attacks/spells)
+- Adds 45-65 Cold Damage (4 sec duration; added to all attacks/spells)
+- Adds 26-40 Fire Damage [verify these are added at 5/5 specifically — Arreat Summit lists these as orb-level mods activating at full set]
+
+(Numbers vary across sources; classic LoD vs D2R may list slightly different ranges. Maxroll D2R lists: orb full-set mods grant adds 100-150 Lightning, 45-65 Cold, 26-40 Fire — these augment all spell hits when the full set is worn.)
+
+### Tal Rasha "5/5 vs 4/5" critical quirk
+
+- At 4/5 (any 4 of 5 pieces worn), the orb grants only "+1 to Sorceress Skills" as its dynamic mod, and the elemental adds DO NOT activate.
+- At 5/5 (all 5 pieces worn), the orb's mod jumps to "+2 to Sorceress Skills" + the three elemental damage adds + the full-set complete bonus block.
+- This is why "Tal Rasha 5/5" is dramatically stronger than "Tal Rasha 4/5" — the elemental damage adds and +2 skill jump only happen with all 5.
+- The dynamic mods on the helm/belt scale linearly per piece count, but the orb has a discontinuous jump from 4-piece to 5-piece.
+- Practical implication: many Sorceresses wear "Tal 4/5 + a runeword" — they specifically replace the orb (Tal Rasha's Lidless Eye) with a runeword orb (Heart of the Oak in Flail or Death's Fathom unique orb), giving up the +2 Sorc skills from the orb's set mod and the elemental damage in exchange for stronger raw FCR / +Skills from the alternative orb. This is the canonical "Tal sorc with Death's Fathom" or "Tal sorc with HoTO" build trade-off.
+
+### Notes
+
+- Drop / source: Lacquered Plate (Tal Guardianship) is qlvl 71 — high-tier Hell area drops only. Mask, Belt, and Amulet drop earlier. The orb (Lidless Eye) is qlvl 65.
+- D2R 2.4+ changes: NO direct numerical changes to Tal Rasha items in D2R 2.4-2.7. The 2.4 Sorceress rework added Cold Mastery synergy to Frozen Orb and shifted Hydra/Meteor synergies, slightly changing optimal builds; Tal Rasha's "+1 Cold/Light/Fire Mastery" innate orb mod gained a tiny boost in relative value as a result.
+- Quirk: Tal Rasha's Adjudication (amulet) has the auto-mod "+2 Sorceress Skills" — combined with the orb's "+2 Sorceress Skills" innate gives +4 Sorc skills before any set tier scaling, which is among the highest "off-the-shelf" Sorc skill totals available without runewords.
+- Mana scaling: at 5/5 the set grants +20+30+40+60 from helm-tier-progression style (only +60 at 5/5), +25+50+75+100 from belt (only +100 at 5/5), plus the +60 in the complete bonus block, plus +30 (helm innate) + +50 (amulet innate) + +60 (belt innate) + +10+77 (orb innate) = ~+387 to Mana from the set at 5/5 [verify exact total].
+- Lightning Resist double-stacking: the amulet has innate +33% Lightning Resist + the per-tier set bonus "+33%" or "+66%" Lightning Resist from the amulet's own dynamic mod, allowing potentially +99% Lightning Resist contribution from the amulet alone at 3+ pieces.
+- Cannot Be Frozen on the full set lets Sorceresses skip CBF requirements on rings/charms.
+- Sockets: 0 sockets on every Tal Rasha piece by default. Larzuk-quest grants 1 socket on the armor (Lacquered Plate base socket count = 4 max, but Tal Guardianship rolls with 0 set sockets and Larzuk grants only 1 to a non-magic-base unique). Common Larzuk fill: a perfect topaz for MF or Um for resists.
+- Common usage: Lightning Sorceress (because amulet + lightning resist double-stacking + orb's Light Mastery +1 + elemental damage adds), Meteor / Frozen Orb / Hydra "tri-elementalist" Sorc (because orb gives all three masteries +1).
+- Iconic build: "Tal Rasha Meteorb" = Meteor + Frozen Orb sorc using full Tal set; the all-three-mastery +1 supports both fire (Meteor) and cold (Orb).
+
+---
+
 <!-- TRANG-OUL -->
