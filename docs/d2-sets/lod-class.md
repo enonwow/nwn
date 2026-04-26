@@ -386,4 +386,81 @@ The most-cited Tal Rasha bonus is the elemental damage scaling on the orb at 5/5
 
 ---
 
-<!-- TRANG-OUL -->
+## Trang-Oul's Avatar (Necromancer)
+
+- Required level (full): 65 (gated by Trang-Oul's Guise — the body armor)
+- Class restriction: Necromancer (helm "Trang-Oul's Guise" is a Necromancer-only Bone Visage; the shield "Trang-Oul's Wing" is a Necromancer-only shrunken head shield; the wand "Trang-Oul's Claws" is a Necromancer-only Heirophant Trophy. Body armor "Trang-Oul's Avatar" itself is a Necromancer-class chestplate. The belt "Trang-Oul's Girth" is class-tag-free.) Effectively the entire set is Necromancer-locked through multiple class-tagged pieces.
+- Pieces: 5
+
+### Items
+
+| # | Item name | Slot/Type | Lvl req | Innate stats |
+|---|-----------|-----------|---------|--------------|
+| 1 | Trang-Oul's Guise | Helm — Bone Visage (Necromancer Helm) | 65 | +180-220% Enhanced Defense; +5% Life Stolen Per Hit; 18% Chance To Cast Level 13 Iron Maiden When Struck; +75 to Life; +75 to Mana; All Resistances +30; Replenish Life +25; Magic Damage Reduced By 4-10 (varies); Socketed (2) |
+| 2 | Trang-Oul's Wing | Shield — Cantor Trophy (Necromancer Shrunken Head Shield) | 54 | +180-220% Enhanced Defense; +50% Damage to Demons; +25% to Cold Skill Damage; Cold Resist +50%; Fire Resist +25%; +2 to Necromancer Skill Levels; +30% Increased Chance of Blocking; +20% Faster Block Rate; +10 to Strength; Socketed (2-4 varies) |
+| 3 | Trang-Oul's Claws | Gloves — Heavy Bracers | 45 | +20% Faster Cast Rate; +30% Enhanced Defense; +25 Defense; Cold Resist +30%; +2 to Curses (Necromancer); +25% to Cold Skill Damage |
+| 4 | Trang-Oul's Girth | Belt — Troll Belt | 62 | +120% Enhanced Defense; +75 Defense; +50 to Mana; +66 to Life; Cold Resist +40%; Lightning Resist +40%; Fire Resist +50%; Poison Resist +20%; +30 Maximum Stamina; Damage Reduced By 4 |
+| 5 | Trang-Oul's Scales | Body Armor — Chaos Armor | 49 | +150% Enhanced Defense; +100 Defense; +66 Defense vs. Missile; +75 to Life; All Resistances +20-50 (varies; commonly +30); Damage Reduced By 25; +1 to Strength per Character Level; Replenish Life +20 [verify "+1 STR per clvl" — Arreat Summit confirms this scaling on Trang-Oul's Scales] |
+
+### Partial bonuses
+
+- 2 pieces (any 2): All Resistances +25
+- 3 pieces (any 3): +1 to Necromancer Skill Levels
+- 4 pieces (any 4): +20% Faster Cast Rate
+
+### Complete set bonus (Trang-Oul Vampire Form)
+
+Equipping all 5 pieces transforms the Necromancer into a permanent Vampire (visual model swap to a vampiric Mephisto-like form) and grants:
+
+- +18% to Cold Skill Damage [verify — some sources list this as +25%]
+- +18% to Fire Skill Damage [verify — some sources list this as +25%]
+- 50% Faster Cast Rate
+- +30% Faster Hit Recovery
+- +200 to Mana
+- +1 to All Skills [verify — Diablo Wiki lists +1, others omit; Maxroll lists nothing here]
+- All Resistances +50
+- 100% Bonus to Attack Rating
+- Hit Causes Monster to Flee 50% [verify]
+- Adds 25-100 Fire Damage
+- 30% Faster Run/Walk
+- 12% Chance to cast Level 7 Lower Resist when struck
+- 9% Chance to cast Level 9 Bone Spirit on attack [verify proc]
+- Permanent transformation into Vampire Form (cosmetic + functional — see below)
+
+### Vampire transformation quirks (CRITICAL)
+
+The full-set transformation is the most distinctive mechanic in any LoD set:
+
+- The Necromancer's character model is replaced with a vampire (red Mephisto-like creature) for as long as all 5 pieces are equipped.
+- Movement speed visually different (faster animation), but the actual run/walk speed is governed by FRW stat — the +30% FRW bonus from the set is real.
+- Fire damage immunity / synergy: the vampire form historically grants partial fire absorb in some patches; in current D2R the form does NOT grant innate fire absorb (only the +18% to Fire Skill Damage explicitly listed bonus).
+- Skill restrictions in vampire form: the Necromancer in vampire form CAN still cast all Necromancer skills normally (curses, summons, bone spells, poison spells). Unlike Druid Werewolf/Werebear, the vampire form does NOT restrict skill casting.
+- The form is not removed by being struck (unlike polymorph attacks from monsters); only un-equipping a set piece reverts the form.
+- Aesthetic: the vampire form makes the character significantly larger and more intimidating; some monsters' AI may target the vampire-form character differently (low-impact in practice).
+- Town interaction: the form is visible in town and persists across waypoint travel.
+- Hireling interaction: the hireling does NOT transform; only the player character does.
+- Multiplayer: other players see your character as the vampire model in MP games.
+
+### Item-specific Necromancer scaling
+
+- Trang-Oul's Wing (shield) "+25% to Cold Skill Damage" + Trang-Oul's Claws (gloves) "+25% to Cold Skill Damage" + full-set "+18% to Cold Skill Damage" = +68% to Cold Skill Damage from the set, doubling Bone Spirit's cold synergy and boosting Skeletal Mage cold damage.
+- "+2 to Curses" on the gloves boosts Amplify Damage, Dim Vision, Weaken, Iron Maiden, Terror, Confuse, Life Tap, Attract, Decrepify, Lower Resist by +2 levels each — significant for Bonemancer / curse-stacker builds.
+- The "+1 Strength per character level" on Trang-Oul's Scales is a hidden scaler — at clvl 99 = +99 Strength, allowing the Necromancer to wear high-strength gear (matching Necromancer's typically low base STR).
+- The 18% chance to cast Iron Maiden on the helm makes the wearer extremely durable in melee — physical attackers reflect damage to themselves.
+
+### Notes
+
+- Drop / source: Bone Visage (Trang Guise) is qlvl 65; Chaos Armor (Trang Scales) is qlvl 49 (lower tier). Wing/Belt/Claws are mid-Hell drops. Set qlvl 65 effectively means full set drops are concentrated in Hell Act 4-5 areas.
+- Class lock (multi-piece): Bone Visage, Cantor Trophy, Heirophant Trophy and the Necromancer-class chestplate are all Necromancer-only base items, so non-Necromancers cannot wear those pieces at all (red text in tooltip). Trang-Oul's Girth (Troll Belt) is the only piece any class can wear.
+- D2R 2.4+ changes: 2.4 Necromancer rework added "+X% to Cold Skill Damage" / "+X% to Fire Skill Damage" / "+X% to Poison Skill Damage" as new affix-types and rebalanced the synergy structure of bone/cold/fire/summon trees. Trang-Oul's set was UPDATED in D2R 2.4 to use these new "+% to X Skill Damage" mods (replacing older "+X% Cold Mastery" wording from classic LoD). Quote (paraphrased from 2.4 patch notes): "Trang-Oul's Avatar set has been updated to use the new +% to Cold Skill Damage and +% to Fire Skill Damage modifiers in line with elemental skill scaling changes." This is a NUMERIC change vs classic LoD: classic Trang-Oul's used different percent values and a different scaling model. (varies: classic LoD - older % values; D2R 2.4+ - +25% Cold Skill Damage on shield, +25% Cold Skill Damage on gloves, +18% Cold and +18% Fire on full set as listed above.)
+- The 2.4 update specifically made Trang-Oul a more competitive Fire-Necromancer set (previously fire-necro builds were rare; Trang-Oul + the new fire skill changes gave them a niche).
+- Quirks:
+  - Iron Maiden proc cannot trigger on monsters that are immune to physical (Iron Maiden converts physical melee damage back to attacker; immune monsters don't deal phys melee in the first place).
+  - Lower Resist proc on the full set is a level 7 cast — significant resistance reduction (~37% at level 7) on monsters in vampire form.
+  - Bone Spirit on attack proc only triggers on physical melee attack, not on spell cast — Necromancers rarely melee, so this proc is mostly cosmetic except for melee-Necro builds.
+- Common usage: Bone Necromancer (cold spec) using Trang-Oul partial 4/5 with a runeword chestplate, OR Fire Necromancer 5/5 (post-2.4) using full vampire form for the +18% Fire and +18% Cold bonuses.
+- Sockets: 2 helm + 2-4 shield + body sockets (Chaos Armor base allows up to 4) = up to 8 sockets; common fills include Mal/Um for resists, perfect topaz for MF.
+- The set is the only LoD set with a permanent visual character transformation tied to the full-set bonus.
+
+---
+
