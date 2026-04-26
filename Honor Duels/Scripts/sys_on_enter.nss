@@ -12,7 +12,7 @@ void main()
     int nCnt = JsonGetLength(jIn);
     if(nCnt > 0)
     {
-        SendMessageToPC(oPC, "[Pojedynek] Czeka na ciebie "
-            + IntToString(nCnt) + " wyzwan(ie). Sprawdz tablice honoru.");
+        SendMessageToPC(oPC, "[Duel] You have "
+            + IntToString(nCnt) + " pending challenge(s). Visit the honor board.");
     }
 }

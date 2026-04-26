@@ -8,11 +8,11 @@ void DuelStartChallengeTargeting(object oPC)
 {
     if(DuelHasAnyActive(GetObjectUUID(oPC)))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Konczysz najpierw obecny pojedynek.");
+        SendMessageToPC(oPC, "[Duel] Finish your current duel first.");
         return;
     }
     SendMessageToPC(oPC,
-        "[Pojedynek] Wybierz wroga w zasiegu wzroku. Klamcy spluwaja na kodeks.");
+        "[Duel] Choose your foe within sight. Liars spit on the code.");
     EnterTargetingMode(oPC, OBJECT_TYPE_CREATURE);
 }
 
@@ -21,17 +21,17 @@ void DuelOnPlayerTarget(object oPC)
     object oTarget = GetTargetingModeSelectedObject();
     if(!GetIsObjectValid(oTarget))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Wybor anulowany.");
+        SendMessageToPC(oPC, "[Duel] Selection canceled.");
         return;
     }
     if(!GetIsPC(oTarget))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Tylko grajacy moga stanac do honorowej walki.");
+        SendMessageToPC(oPC, "[Duel] Only living players may answer the code of honor.");
         return;
     }
     if(oTarget == oPC)
     {
-        SendMessageToPC(oPC, "[Pojedynek] Nie wyzywaj samego siebie.");
+        SendMessageToPC(oPC, "[Duel] You cannot challenge yourself.");
         return;
     }
     DuelShowChallengeConfig(oPC, GetObjectUUID(oTarget), GetName(oTarget));

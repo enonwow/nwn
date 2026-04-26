@@ -188,13 +188,13 @@ string DuelStatusToString(int nStatus)
 {
     switch(nStatus)
     {
-        case DUEL_STATUS_PENDING:     return "Oczekuje";
-        case DUEL_STATUS_ACCEPTED:    return "Przyjete";
-        case DUEL_STATUS_IN_PROGRESS: return "W trakcie";
-        case DUEL_STATUS_COMPLETED:   return "Zakonczone";
-        case DUEL_STATUS_DECLINED:    return "Odrzucone";
-        case DUEL_STATUS_EXPIRED:     return "Wygaslo";
-        case DUEL_STATUS_CANCELED:    return "Anulowane";
+        case DUEL_STATUS_PENDING:     return "Pending";
+        case DUEL_STATUS_ACCEPTED:    return "Accepted";
+        case DUEL_STATUS_IN_PROGRESS: return "In progress";
+        case DUEL_STATUS_COMPLETED:   return "Completed";
+        case DUEL_STATUS_DECLINED:    return "Declined";
+        case DUEL_STATUS_EXPIRED:     return "Expired";
+        case DUEL_STATUS_CANCELED:    return "Canceled";
     }
     return "?";
 }
@@ -203,9 +203,9 @@ string DuelWinConditionToString(int nWin)
 {
     switch(nWin)
     {
-        case DUEL_WIN_FIRST_BLOOD: return "Pierwsza krew";
-        case DUEL_WIN_TO_DEATH:    return "Na smierc";
-        case DUEL_WIN_TO_YIELD:    return "Do poddania";
+        case DUEL_WIN_FIRST_BLOOD: return "First blood";
+        case DUEL_WIN_TO_DEATH:    return "To the death";
+        case DUEL_WIN_TO_YIELD:    return "Until yield";
     }
     return "?";
 }
@@ -213,10 +213,10 @@ string DuelWinConditionToString(int nWin)
 string DuelRulesToString(int nMask)
 {
     string sOut = "";
-    if(nMask & DUEL_RULE_NO_MAGIC) sOut += "bez magii, ";
-    if(nMask & DUEL_RULE_NO_ITEMS) sOut += "bez mikstur, ";
-    if(nMask & DUEL_RULE_NO_CRIT)  sOut += "bez krytykow, ";
-    if(sOut == "") return "honorowy";
+    if(nMask & DUEL_RULE_NO_MAGIC) sOut += "no magic, ";
+    if(nMask & DUEL_RULE_NO_ITEMS) sOut += "no potions, ";
+    if(nMask & DUEL_RULE_NO_CRIT)  sOut += "no crits, ";
+    if(sOut == "") return "honorable";
     return GetStringLeft(sOut, GetStringLength(sOut) - 2);
 }
 

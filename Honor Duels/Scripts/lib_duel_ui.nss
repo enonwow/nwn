@@ -56,7 +56,7 @@ void CreateDuelMainWindow(object oPC)
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jTitle = NuiHeight(jTitle, fBtnH);
 
-    json jClose = NuiButton(JsonString("Zamknij"));
+    json jClose = NuiButton(JsonString("Close"));
     jClose = NuiId(jClose, DUEL_BTN_CLOSE);
     jClose = NuiWidth(jClose, GetNuiScaleDimension(oPC, 90.0));
     jClose = NuiHeight(jClose, fBtnH);
@@ -80,22 +80,22 @@ void CreateDuelMainWindow(object oPC)
     jStatRow = JsonArrayInsert(jStatRow, jRecord);
 
     // -- Challenge button --
-    json jChallenge = NuiButton(JsonString("Rzuc rekawice (wybierz cel)"));
+    json jChallenge = NuiButton(JsonString("Throw down the gauntlet (select target)"));
     jChallenge = NuiId(jChallenge, DUEL_BTN_CHALLENGE);
     jChallenge = NuiHeight(jChallenge, fBtnH);
 
     // -- Tabs --
-    json jTabInc = NuiButton(JsonString("Wyzwania"));
+    json jTabInc = NuiButton(JsonString("Challenges"));
     jTabInc = NuiId(jTabInc, DUEL_BTN_TAB_INCOMING);
     jTabInc = NuiEncouraged(jTabInc, NuiBind(DUEL_BIND_TAB_INCOMING_ENC));
     jTabInc = NuiHeight(jTabInc, fBtnH);
 
-    json jTabHis = NuiButton(JsonString("Historia"));
+    json jTabHis = NuiButton(JsonString("History"));
     jTabHis = NuiId(jTabHis, DUEL_BTN_TAB_HISTORY);
     jTabHis = NuiEncouraged(jTabHis, NuiBind(DUEL_BIND_TAB_HISTORY_ENC));
     jTabHis = NuiHeight(jTabHis, fBtnH);
 
-    json jTabRnk = NuiButton(JsonString("Ranking honoru"));
+    json jTabRnk = NuiButton(JsonString("Honor ranking"));
     jTabRnk = NuiId(jTabRnk, DUEL_BTN_TAB_RANKING);
     jTabRnk = NuiEncouraged(jTabRnk, NuiBind(DUEL_BIND_TAB_RANKING_ENC));
     jTabRnk = NuiHeight(jTabRnk, fBtnH);
@@ -134,11 +134,11 @@ void CreateDuelMainWindow(object oPC)
     int nTk = NuiCreate(oPC, jNui, DUEL_WINDOW, DUEL_EV_SCRIPT);
 
     NuiSetBind(oPC, nTk, WINDOW_TITLE,
-        JsonString("Honorowe Pojedynki"));
+        JsonString("Honor Duels"));
     NuiSetBind(oPC, nTk, WINDOW_GEOMETRY,
         NuiRect(-1.0, -1.0, fW, fH));
     NuiSetBind(oPC, nTk, DUEL_BIND_TITLE,
-        JsonString("Honorowe Pojedynki"));
+        JsonString("Honor Duels"));
 
     FeedDuelMain(oPC, nTk);
 }
@@ -177,14 +177,14 @@ void FeedDuelIncoming(object oPC, int nToken)
         int nStake    = JsonGetInt   (JsonObjectGet(jR, "stake_gold"));
         int nStatus   = JsonGetInt   (JsonObjectGet(jR, "status"));
 
-        string sPrefix = (sDir == "in") ? "Od: " : "Do: ";
-        string sStatus = (nStatus == DUEL_STATUS_PENDING) ? "[oczekuje]" : "[przyjete]";
+        string sPrefix = (sDir == "in") ? "From: " : "To: ";
+        string sStatus = (nStatus == DUEL_STATUS_PENDING) ? "[pending]" : "[accepted]";
 
         jPrim  = JsonArrayInsert(jPrim, JsonString(sPrefix + sName + " " + sStatus));
         jSec   = JsonArrayInsert(jSec,
             JsonString(DuelWinConditionToString(nWin) + " | " + DuelRulesToString(nRules)));
         jRight = JsonArrayInsert(jRight,
-            JsonString(nStake > 0 ? IntToString(nStake) + " zl" : "—"));
+            JsonString(nStake > 0 ? IntToString(nStake) + " gp" : "—"));
 
         json jColor = (sDir == "in") ? NuiColor(220, 200, 120) : NuiColor(150, 150, 200);
         jCol   = JsonArrayInsert(jCol, jColor);
@@ -194,7 +194,7 @@ void FeedDuelIncoming(object oPC, int nToken)
 
     NuiSetBind(oPC, nToken, DUEL_BIND_EMPTY_VIS, JsonBool(nCnt == 0));
     NuiSetBind(oPC, nToken, DUEL_BIND_EMPTY_TXT,
-        JsonString("Zadnych aktywnych wyzwan. Rzuc rekawice komus z dobrych dlonia mieczem."));
+        JsonString("No active challenges. Throw down the gauntlet to a worthy blade."));
 }
 
 void FeedDuelHistory(object oPC, int nToken)
@@ -226,27 +226,27 @@ void FeedDuelHistory(object oPC, int nToken)
         json jColor;
         if(nStatus == DUEL_STATUS_COMPLETED && sWn == sUuid)
         {
-            sLine = "Zwyciestwo nad " + sOpp;
+            sLine = "Victory over " + sOpp;
             jColor = NuiColor(120, 220, 120);
         }
         else if(nStatus == DUEL_STATUS_COMPLETED)
         {
-            sLine = "Porazka z " + sOpp;
+            sLine = "Defeat by " + sOpp;
             jColor = NuiColor(220, 120, 120);
         }
         else if(nStatus == DUEL_STATUS_DECLINED)
         {
-            sLine = "Odrzucone z " + sOpp;
+            sLine = "Declined with " + sOpp;
             jColor = NuiColor(170, 170, 170);
         }
         else if(nStatus == DUEL_STATUS_CANCELED)
         {
-            sLine = "Anulowane z " + sOpp;
+            sLine = "Canceled with " + sOpp;
             jColor = NuiColor(170, 170, 170);
         }
         else
         {
-            sLine = "Wygaslo z " + sOpp;
+            sLine = "Expired with " + sOpp;
             jColor = NuiColor(170, 170, 170);
         }
 
@@ -262,7 +262,7 @@ void FeedDuelHistory(object oPC, int nToken)
 
     NuiSetBind(oPC, nToken, DUEL_BIND_EMPTY_VIS, JsonBool(nCnt == 0));
     NuiSetBind(oPC, nToken, DUEL_BIND_EMPTY_TXT,
-        JsonString("Brak zapisanych pojedynkow. Twoja karta honoru jest jeszcze pusta."));
+        JsonString("No recorded duels. Your honor ledger is still blank."));
 }
 
 void FeedDuelRanking(object oPC, int nToken)
@@ -288,8 +288,8 @@ void FeedDuelRanking(object oPC, int nToken)
         jPrim = JsonArrayInsert(jPrim,
             JsonString(IntToString(i + 1) + ". " + sName));
         jSec  = JsonArrayInsert(jSec,
-            JsonString("W: " + IntToString(nWins) + " | P: " + IntToString(nLosses)
-                + " | Glowy: " + IntToString(nKills)));
+            JsonString("W: " + IntToString(nWins) + " | L: " + IntToString(nLosses)
+                + " | Kills: " + IntToString(nKills)));
         jRight= JsonArrayInsert(jRight,
             JsonString("Honor " + IntToString(nHonor)));
 
@@ -305,7 +305,7 @@ void FeedDuelRanking(object oPC, int nToken)
 
     NuiSetBind(oPC, nToken, DUEL_BIND_EMPTY_VIS, JsonBool(nCnt == 0));
     NuiSetBind(oPC, nToken, DUEL_BIND_EMPTY_TXT,
-        JsonString("Nikt jeszcze nie skrzyzowal mieczy."));
+        JsonString("No one has yet crossed swords."));
 }
 
 void FeedDuelMain(object oPC, int nToken)
@@ -324,8 +324,8 @@ void FeedDuelMain(object oPC, int nToken)
     NuiSetBind(oPC, nToken, DUEL_BIND_HONOR_LBL,
         JsonString("Honor: " + IntToString(nHonor)));
     NuiSetBind(oPC, nToken, DUEL_BIND_RECORD_LBL,
-        JsonString("W: " + IntToString(nWins) + " / P: " + IntToString(nLosses)
-            + " / Glowy: " + IntToString(nKills)));
+        JsonString("W: " + IntToString(nWins) + " / L: " + IntToString(nLosses)
+            + " / Kills: " + IntToString(nKills)));
 
     int nView = GetLocalInt(oPC, DUEL_LVAR_VIEW);
     NuiSetBind(oPC, nToken, DUEL_BIND_TAB_INCOMING_ENC, JsonBool(nView == DUEL_VIEW_INCOMING));

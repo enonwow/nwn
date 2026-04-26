@@ -51,7 +51,7 @@ const string NUI_INFO_MODAL_INT = "NUI_INFO_MODAL_INT";
 const string NUI_INFO_MODAL_OBJECTS = "NUI_INFO_MODAL_OBJECTS";
 const string NUI_GIF_WINDOW = "NUI_GIF_WINDOW";
 
-// GetNuiScaleDimension(oPC, fDimension, fScaleMax=1.5) — skaluje wymiary widgetow wg GUI scale gracza
+// GetNuiScaleDimension(oPC, fDimension, fScaleMax=1.5) — scales widget dimensions by player's GUI scale
 float GetNuiScaleDimension(object oPC, float fDemension, float fScaleMax = 1.5)
 {
     int nScaleGui = GetPlayerDeviceProperty(oPC, PLAYER_DEVICE_PROPERTY_GUI_SCALE);
@@ -76,7 +76,7 @@ json GetNuiColorNwnGold()
     return NuiColor(185, 150, 100);
 }
 
-// NuiAddInfoRow() — zwraca wiersz z przyciskiem info (?) do dolaczenia do title row
+// NuiAddInfoRow() — returns a row with an info button (?) to attach to a title row
 json NuiAddInfoRow()
 {
     float fButtonWidth = NUI_INFO_IMAGE_WIDTH - 30.0;
@@ -85,7 +85,7 @@ json NuiAddInfoRow()
     json jButton = NuiId(NuiButton(JsonString("")), NUI_INFO_BUTTON_ID);
     jButton = NuiWidth(jButton, fButtonWidth);
     jButton = NuiHeight(jButton, fButtonHeight);
-    jButton = NuiTooltip(jButton, JsonString("Nacisnij by otrzymac wiecej informacji."));
+    jButton = NuiTooltip(jButton, JsonString("Click for more information."));
     jRow = JsonArrayInsert(jRow, NuiHeight(NuiSpacer(), fButtonWidth));
     jRow = JsonArrayInsert(jRow, jButton);
     jRow = JsonArrayInsert(jRow, NuiWidth(NuiSpacer(), 15.0));
@@ -103,6 +103,6 @@ json NuiAddInfoImage(float fWindowWidth, json jImageList, float nImageWidthOffse
     return JsonArrayInsert(jImageList, jImageInfo);
 }
 
-// CreateWindowInfo(oPC, sStatment) — otwiera okno info (500x400) z tekstem i przyciskiem Zamknij
+// CreateWindowInfo(oPC, sStatment) — opens an info window (500x400) with text and a Close button
 // Obslugiwane przez lib_nui_ev.nss (NUI_INFO_NUI_EVENT_SCRIPT)
 void CreateWindowInfo(object oPC, string sStatment);

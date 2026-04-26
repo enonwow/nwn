@@ -24,14 +24,14 @@ void CreateDuelHud(object oPC, int nDuelId)
         JsonInt(NUI_HALIGN_CENTER), JsonInt(NUI_VALIGN_MIDDLE));
     jTitle = NuiHeight(jTitle, fLblH);
 
-    json jOppLbl = NuiLabel(JsonString("Przeciwnik"),
+    json jOppLbl = NuiLabel(JsonString("Opponent"),
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jOppLbl = NuiHeight(jOppLbl, fLblH);
     json jOppBar = NuiProgress(NuiBind(DUEL_BIND_HUD_OPP_HP));
     jOppBar = NuiTooltip(jOppBar, NuiBind(DUEL_BIND_HUD_OPP_HP_TIP));
     jOppBar = NuiHeight(jOppBar, fBarH);
 
-    json jSelfLbl = NuiLabel(JsonString("Ty"),
+    json jSelfLbl = NuiLabel(JsonString("You"),
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jSelfLbl = NuiHeight(jSelfLbl, fLblH);
     json jSelfBar = NuiProgress(NuiBind(DUEL_BIND_HUD_SELF_HP));
@@ -43,7 +43,7 @@ void CreateDuelHud(object oPC, int nDuelId)
     jBounds = NuiHeight(jBounds, fLblH);
     jBounds = NuiStyleForegroundColor(jBounds, NuiColor(220, 60, 60));
 
-    json jYield = NuiButton(JsonString("Poddaj sie"));
+    json jYield = NuiButton(JsonString("Yield"));
     jYield = NuiId(jYield, DUEL_BTN_HUD_YIELD);
     jYield = NuiHeight(jYield, fBtnH);
 
@@ -59,7 +59,7 @@ void CreateDuelHud(object oPC, int nDuelId)
     json jRoot = NuiCol(jCol);
 
     json jNui = NuiWindow(jRoot,
-        JsonString("Pojedynek"),
+        JsonString("Duel"),
         NuiBind(DUEL_BIND_HUD_GEOM),
         JsonBool(FALSE),  // resizable
         JsonBool(FALSE),  // collapsed
@@ -71,7 +71,7 @@ void CreateDuelHud(object oPC, int nDuelId)
 
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_GEOM,
         NuiRect(20.0, 60.0, fW, fH));
-    NuiSetBind(oPC, nTk, DUEL_BIND_HUD_TITLE,    JsonString("Pojedynek"));
+    NuiSetBind(oPC, nTk, DUEL_BIND_HUD_TITLE,    JsonString("Duel"));
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_OPP_HP,   JsonFloat(1.0));
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_SELF_HP,  JsonFloat(1.0));
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_OPP_HP_TIP,  JsonString("100%"));
@@ -119,11 +119,11 @@ void DuelShowIncomingPopup(object oPC, int nDuelId)
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jStake = NuiHeight(jStake, fLblH);
 
-    json jAccept = NuiButton(JsonString("Przyjmij"));
+    json jAccept = NuiButton(JsonString("Accept"));
     jAccept = NuiId(jAccept, DUEL_BTN_INC_ACCEPT);
     jAccept = NuiHeight(jAccept, fBtnH);
 
-    json jDecline = NuiButton(JsonString("Odrzuc"));
+    json jDecline = NuiButton(JsonString("Decline"));
     jDecline = NuiId(jDecline, DUEL_BTN_INC_DECLINE);
     jDecline = NuiHeight(jDecline, fBtnH);
 
@@ -142,7 +142,7 @@ void DuelShowIncomingPopup(object oPC, int nDuelId)
     json jRoot = NuiCol(jCol);
 
     json jNui = NuiWindow(jRoot,
-        JsonString("Wyzwanie"),
+        JsonString("Challenge"),
         NuiRect(-1.0, -1.0, fW, fH),
         JsonBool(FALSE),
         JsonBool(FALSE),
@@ -153,15 +153,15 @@ void DuelShowIncomingPopup(object oPC, int nDuelId)
     int nTk = NuiCreate(oPC, jNui, DUEL_WIN_INCOMING, DUEL_EV_SCRIPT);
 
     NuiSetBind(oPC, nTk, DUEL_BIND_INC_TITLE,
-        JsonString(sName + " rzuca ci wyzwanie."));
+        JsonString(sName + " challenges you."));
     NuiSetBind(oPC, nTk, DUEL_BIND_INC_WIN,
-        JsonString("Warunek zwyciestwa: " + DuelWinConditionToString(nWinCond)));
+        JsonString("Win condition: " + DuelWinConditionToString(nWinCond)));
     NuiSetBind(oPC, nTk, DUEL_BIND_INC_RULES,
-        JsonString("Reguly: " + DuelRulesToString(nRules)));
+        JsonString("Rules: " + DuelRulesToString(nRules)));
     NuiSetBind(oPC, nTk, DUEL_BIND_INC_STAKE,
         JsonString(nStake > 0
-            ? "Stawka: " + IntToString(nStake) + " zlota (musisz dolozyc tyle samo)"
-            : "Stawka: brak"));
+            ? "Stake: " + IntToString(nStake) + " gold (you must match it)"
+            : "Stake: none"));
 }
 
 // ----------------------------------------------------------------
@@ -189,31 +189,31 @@ void DuelShowChallengeConfig(object oPC, string sTargetUuid, string sTargetName)
     jTarget = NuiHeight(jTarget, fLblH);
 
     // Win condition group
-    json jWinLbl = NuiLabel(JsonString("Warunek zwyciestwa:"),
+    json jWinLbl = NuiLabel(JsonString("Win condition:"),
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jWinLbl = NuiHeight(jWinLbl, fLblH);
 
-    json jWinFb = NuiCheck(JsonString("Pierwsza krew"), NuiBind(DUEL_BIND_CH_WIN_FB));
+    json jWinFb = NuiCheck(JsonString("First blood"), NuiBind(DUEL_BIND_CH_WIN_FB));
     jWinFb = NuiId(jWinFb, DUEL_BTN_CH_WIN_FB);
-    json jWinDeath = NuiCheck(JsonString("Na smierc"), NuiBind(DUEL_BIND_CH_WIN_DEATH));
+    json jWinDeath = NuiCheck(JsonString("To the death"), NuiBind(DUEL_BIND_CH_WIN_DEATH));
     jWinDeath = NuiId(jWinDeath, DUEL_BTN_CH_WIN_DEATH);
-    json jWinYield = NuiCheck(JsonString("Do poddania"), NuiBind(DUEL_BIND_CH_WIN_YIELD));
+    json jWinYield = NuiCheck(JsonString("Until yield"), NuiBind(DUEL_BIND_CH_WIN_YIELD));
     jWinYield = NuiId(jWinYield, DUEL_BTN_CH_WIN_YIELD);
 
     // Rules group
-    json jRulesLbl = NuiLabel(JsonString("Reguly:"),
+    json jRulesLbl = NuiLabel(JsonString("Rules:"),
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jRulesLbl = NuiHeight(jRulesLbl, fLblH);
 
-    json jR1 = NuiCheck(JsonString("Bez magii"), NuiBind(DUEL_BIND_CH_RULE_NOMAGIC));
+    json jR1 = NuiCheck(JsonString("No magic"), NuiBind(DUEL_BIND_CH_RULE_NOMAGIC));
     jR1 = NuiId(jR1, DUEL_BTN_CH_RULE_NOMAGIC);
-    json jR2 = NuiCheck(JsonString("Bez mikstur i zwojow"), NuiBind(DUEL_BIND_CH_RULE_NOITEMS));
+    json jR2 = NuiCheck(JsonString("No potions or scrolls"), NuiBind(DUEL_BIND_CH_RULE_NOITEMS));
     jR2 = NuiId(jR2, DUEL_BTN_CH_RULE_NOITEMS);
-    json jR3 = NuiCheck(JsonString("Bez krytykow"), NuiBind(DUEL_BIND_CH_RULE_NOCRIT));
+    json jR3 = NuiCheck(JsonString("No crits"), NuiBind(DUEL_BIND_CH_RULE_NOCRIT));
     jR3 = NuiId(jR3, DUEL_BTN_CH_RULE_NOCRIT);
 
     // Stake
-    json jStakeLbl = NuiLabel(JsonString("Stawka (zloto):"),
+    json jStakeLbl = NuiLabel(JsonString("Stake (gold):"),
         JsonInt(NUI_HALIGN_LEFT), JsonInt(NUI_VALIGN_MIDDLE));
     jStakeLbl = NuiHeight(jStakeLbl, fLblH);
 
@@ -221,12 +221,12 @@ void DuelShowChallengeConfig(object oPC, string sTargetUuid, string sTargetName)
     jStake = NuiHeight(jStake, fLblH);
 
     // Buttons
-    json jSend = NuiButton(JsonString("Rzuc rekawice"));
+    json jSend = NuiButton(JsonString("Throw down the gauntlet"));
     jSend = NuiId(jSend, DUEL_BTN_CH_SEND);
     jSend = NuiEnabled(jSend, NuiBind(DUEL_BIND_CH_SEND_ENA));
     jSend = NuiHeight(jSend, fBtnH);
 
-    json jCancel = NuiButton(JsonString("Anuluj"));
+    json jCancel = NuiButton(JsonString("Cancel"));
     jCancel = NuiId(jCancel, DUEL_BTN_CH_CANCEL);
     jCancel = NuiHeight(jCancel, fBtnH);
 
@@ -252,7 +252,7 @@ void DuelShowChallengeConfig(object oPC, string sTargetUuid, string sTargetName)
     json jRoot = NuiCol(jCol);
 
     json jNui = NuiWindow(jRoot,
-        JsonString("Wyzwanie na pojedynek"),
+        JsonString("Challenge to a duel"),
         NuiRect(-1.0, -1.0, fW, fH),
         JsonBool(FALSE), JsonBool(FALSE),
         JsonBool(TRUE),  JsonBool(FALSE), JsonBool(TRUE));
@@ -260,7 +260,7 @@ void DuelShowChallengeConfig(object oPC, string sTargetUuid, string sTargetName)
     int nTk = NuiCreate(oPC, jNui, DUEL_WIN_CHALLENGE, DUEL_EV_SCRIPT);
 
     NuiSetBind(oPC, nTk, DUEL_BIND_CH_TARGET_LBL,
-        JsonString("Wyzywasz: " + sTargetName));
+        JsonString("Challenging: " + sTargetName));
     NuiSetBind(oPC, nTk, DUEL_BIND_CH_WIN_FB,        JsonBool(TRUE));
     NuiSetBind(oPC, nTk, DUEL_BIND_CH_WIN_DEATH,     JsonBool(FALSE));
     NuiSetBind(oPC, nTk, DUEL_BIND_CH_WIN_YIELD,     JsonBool(FALSE));

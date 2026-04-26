@@ -11,7 +11,7 @@ void DuelHandleSubmitFromConfig(object oPC, int nToken)
     string sTargetName = GetLocalString(oPC, DUEL_LVAR_DRAFT_NAME);
     if(sTargetUuid == "")
     {
-        SendMessageToPC(oPC, "[Pojedynek] Brak celu.");
+        SendMessageToPC(oPC, "[Duel] No target selected.");
         return;
     }
 
@@ -181,7 +181,7 @@ void main()
                 string sVal = JsonGetString(NuiGetBind(oPC, nToken, DUEL_BIND_CH_STAKE_TXT));
                 int nVal = StringToInt(sVal);
                 if(sVal != "" && sVal != "0" && nVal <= 0)
-                    SendMessageToPC(oPC, "[Pojedynek] Stawka musi byc liczba calkowita.");
+                    SendMessageToPC(oPC, "[Duel] Stake must be a whole positive number.");
                 return;
             }
         }

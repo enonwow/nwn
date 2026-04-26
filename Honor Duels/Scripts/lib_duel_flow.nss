@@ -22,12 +22,12 @@ void DuelBroadcast(string sMsg, object oA, object oB)
     if(GetIsObjectValid(oA))
     {
         FloatingTextStringOnCreature(sMsg, oA, FALSE);
-        SendMessageToPC(oA, "[Pojedynek] " + sMsg);
+        SendMessageToPC(oA, "[Duel] " + sMsg);
     }
     if(GetIsObjectValid(oB))
     {
         FloatingTextStringOnCreature(sMsg, oB, FALSE);
-        SendMessageToPC(oB, "[Pojedynek] " + sMsg);
+        SendMessageToPC(oB, "[Duel] " + sMsg);
     }
 }
 
@@ -36,9 +36,9 @@ void DuelNotifyChallenged(string sChallengedUuid, int nDuelId, string sChallenge
     object oPC = DuelGetPCByUUID(sChallengedUuid);
     if(!GetIsObjectValid(oPC)) return;
 
-    string sMsg = sChallengerName + " rzuca ci wyzwanie. Honor czeka.";
+    string sMsg = sChallengerName + " challenges you. Honor awaits.";
     FloatingTextStringOnCreature(sMsg, oPC, FALSE);
-    SendMessageToPC(oPC, "[Pojedynek] " + sMsg);
+    SendMessageToPC(oPC, "[Duel] " + sMsg);
 
     DelayCommand(0.5, DuelShowIncomingPopup(oPC, nDuelId));
 }
@@ -52,41 +52,41 @@ int DuelSubmitChallenge(object oPC, string sTargetUuid, string sTargetName,
 {
     if(sTargetUuid == "" || sTargetUuid == GetObjectUUID(oPC))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Nieprawidlowy cel.");
+        SendMessageToPC(oPC, "[Duel] Invalid target.");
         return 0;
     }
 
     if(DuelHasActiveBetween(GetObjectUUID(oPC), sTargetUuid))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Macie juz aktywny pojedynek lub wyzwanie.");
+        SendMessageToPC(oPC, "[Duel] You already have an active duel or challenge with that player.");
         return 0;
     }
 
     if(nStake < 0) nStake = 0;
     if(nStake > 0 && GetGold(oPC) < nStake)
     {
-        SendMessageToPC(oPC, "[Pojedynek] Nie masz tyle zlota na stawke.");
+        SendMessageToPC(oPC, "[Duel] Not enough gold for the stake.");
         return 0;
     }
 
     object oTarget = DuelGetPCByUUID(sTargetUuid);
     if(!GetIsObjectValid(oTarget))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Przeciwnik musi byc obecny.");
+        SendMessageToPC(oPC, "[Duel] Opponent must be online.");
         return 0;
     }
 
     int nId = DuelCreate(oPC, oTarget, nRules, nWinCond, nStake);
     if(nId <= 0)
     {
-        SendMessageToPC(oPC, "[Pojedynek] Nie udalo sie utworzyc wyzwania.");
+        SendMessageToPC(oPC, "[Duel] Could not create challenge.");
         return 0;
     }
 
     if(nStake > 0)
         AssignCommand(oPC, TakeGoldFromCreature(nStake, oPC, TRUE));
 
-    SendMessageToPC(oPC, "[Pojedynek] Wyzwanie wyslane do " + sTargetName + ".");
+    SendMessageToPC(oPC, "[Duel] Challenge sent to " + sTargetName + ".");
     DuelNotifyChallenged(sTargetUuid, nId, GetName(oPC));
     return nId;
 }
@@ -102,7 +102,7 @@ void DuelRefundStake(string sUuid, int nGold)
     if(GetIsObjectValid(oPC))
     {
         GiveGoldToCreature(oPC, nGold);
-        SendMessageToPC(oPC, "[Pojedynek] Stawka " + IntToString(nGold) + " zlota zwrocona.");
+        SendMessageToPC(oPC, "[Duel] Stake of " + IntToString(nGold) + " gold refunded.");
     }
     // Offline: gold is forfeit. A real server would queue a refund into Mailbox.
 }
@@ -123,7 +123,7 @@ void DuelDecline(object oPC, int nDuelId)
     int nStake = JsonGetInt(JsonObjectGet(jD, "stake_gold"));
 
     DuelSetOutcome(nDuelId, DUEL_STATUS_DECLINED, "", GetObjectUUID(oPC),
-                   "Odrzucone bez walki.");
+                   "Refused without a fight.");
 
     DuelRefundStake(sChallengerUuid, nStake);
 
@@ -131,7 +131,7 @@ void DuelDecline(object oPC, int nDuelId)
                     DUEL_HONOR_DECLINE, 0, 0, 1, 0, 0);
 
     object oCh = DuelGetPCByUUID(sChallengerUuid);
-    DuelBroadcast("Wyzwanie odrzucone. Honor pochylony nizej niz miecz.",
+    DuelBroadcast("Challenge declined. Honor stooped lower than the blade.",
                   oCh, oPC);
 
     object oRefresh = GetFirstPC();
@@ -152,10 +152,10 @@ void DuelCancelOutgoing(object oPC, int nDuelId)
 
     int nStake = JsonGetInt(JsonObjectGet(jD, "stake_gold"));
     DuelSetOutcome(nDuelId, DUEL_STATUS_CANCELED,
-                   "", "", "Anulowane przez wyzywajacego.");
+                   "", "", "Canceled by the challenger.");
     if(nStake > 0) GiveGoldToCreature(oPC, nStake);
 
-    SendMessageToPC(oPC, "[Pojedynek] Wyzwanie wycofane.");
+    SendMessageToPC(oPC, "[Duel] Challenge withdrawn.");
 
     int nTk = NuiFindWindow(oPC, DUEL_WINDOW);
     if(nTk != 0) FeedDuelMain(oPC, nTk);
@@ -180,15 +180,15 @@ void DuelAccept(object oPC, int nDuelId)
     object oChallenger = DuelGetPCByUUID(sChallengerUuid);
     if(!GetIsObjectValid(oChallenger))
     {
-        SendMessageToPC(oPC, "[Pojedynek] Wyzywajacego juz nie ma w grze.");
-        DuelSetOutcome(nDuelId, DUEL_STATUS_EXPIRED, "", "", "Brak wyzywajacego.");
+        SendMessageToPC(oPC, "[Duel] The challenger is no longer in game.");
+        DuelSetOutcome(nDuelId, DUEL_STATUS_EXPIRED, "", "", "Challenger absent.");
         return;
     }
 
     int nStake = JsonGetInt(JsonObjectGet(jD, "stake_gold"));
     if(nStake > 0 && GetGold(oPC) < nStake)
     {
-        SendMessageToPC(oPC, "[Pojedynek] Nie masz zlota by sprostac stawce.");
+        SendMessageToPC(oPC, "[Duel] Not enough gold to match the stake.");
         return;
     }
     if(nStake > 0)
@@ -202,7 +202,7 @@ void DuelAccept(object oPC, int nDuelId)
         Location(GetArea(oChallenger), vArena, 0.0));
     if(fDist > DUEL_ARENA_RADIUS * 1.5)
     {
-        SendMessageToPC(oPC, "[Pojedynek] Musisz stawic sie w poblizu wyzywajacego.");
+        SendMessageToPC(oPC, "[Duel] You must stand near the challenger.");
         if(nStake > 0) GiveGoldToCreature(oPC, nStake);
         return;
     }
@@ -212,7 +212,7 @@ void DuelAccept(object oPC, int nDuelId)
     SetLocalInt(oPC,         DUEL_LVAR_ACTIVE_DUEL, nDuelId);
     SetLocalInt(oChallenger, DUEL_LVAR_ACTIVE_DUEL, nDuelId);
 
-    DuelBroadcast("Wyzwanie przyjete. Krew rozstrzygnie spor.",
+    DuelBroadcast("Challenge accepted. Blood shall settle the dispute.",
                   oChallenger, oPC);
 
     // Countdown floating text on both
@@ -260,7 +260,7 @@ void DuelBegin(int nDuelId)
     object oB = DuelGetPCByUUID(JsonGetString(JsonObjectGet(jD, "challenged_uuid")));
     if(!GetIsObjectValid(oA) || !GetIsObjectValid(oB))
     {
-        DuelSetOutcome(nDuelId, DUEL_STATUS_EXPIRED, "", "", "Strona opuscila gre.");
+        DuelSetOutcome(nDuelId, DUEL_STATUS_EXPIRED, "", "", "A duelist left the game.");
         return;
     }
 
@@ -268,7 +268,7 @@ void DuelBegin(int nDuelId)
 
     DuelMakeHostile(oA, oB);
 
-    DuelBroadcast("WALKA!", oA, oB);
+    DuelBroadcast("FIGHT!", oA, oB);
 
     CreateDuelHud(oA, nDuelId);
     CreateDuelHud(oB, nDuelId);
@@ -298,7 +298,7 @@ void DuelUpdateHud(object oPC, object oOpp, int nFracSelf, int nFracOpp)
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_SELF_HP_TIP, JsonString(IntToString(nFracSelf) + "%"));
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_OPP_HP_TIP,  JsonString(IntToString(nFracOpp) + "%"));
     NuiSetBind(oPC, nTk, DUEL_BIND_HUD_TITLE,
-        JsonString("Pojedynek: " + GetName(oOpp)));
+        JsonString("Duel: " + GetName(oOpp)));
 }
 
 void DuelTick(int nDuelId)
@@ -317,12 +317,12 @@ void DuelTick(int nDuelId)
     // Disconnect / death-by-ragequit handling.
     if(!GetIsObjectValid(oA))
     {
-        DuelEnd(nDuelId, sUuidB, sUuidA, "Wyzywajacy opuscil arene.", FALSE);
+        DuelEnd(nDuelId, sUuidB, sUuidA, "Challenger left the arena.", FALSE);
         return;
     }
     if(!GetIsObjectValid(oB))
     {
-        DuelEnd(nDuelId, sUuidA, sUuidB, "Wyzwany opuscil arene.", FALSE);
+        DuelEnd(nDuelId, sUuidA, sUuidB, "Challenged left the arena.", FALSE);
         return;
     }
 
@@ -330,17 +330,17 @@ void DuelTick(int nDuelId)
     int nDeadB = GetIsDead(oB);
     if(nDeadA && !nDeadB)
     {
-        DuelEnd(nDuelId, sUuidB, sUuidA, "Smiertelny cios.", TRUE);
+        DuelEnd(nDuelId, sUuidB, sUuidA, "Killing blow.", TRUE);
         return;
     }
     if(nDeadB && !nDeadA)
     {
-        DuelEnd(nDuelId, sUuidA, sUuidB, "Smiertelny cios.", TRUE);
+        DuelEnd(nDuelId, sUuidA, sUuidB, "Killing blow.", TRUE);
         return;
     }
     if(nDeadA && nDeadB)
     {
-        DuelEnd(nDuelId, "", "", "Obaj polegli.", FALSE);
+        DuelEnd(nDuelId, "", "", "Both fell.", FALSE);
         return;
     }
 
@@ -354,19 +354,19 @@ void DuelTick(int nDuelId)
         int nThr = FloatToInt(DUEL_FIRST_BLOOD_FRAC * 100.0);
         if(nFracA <= nThr && nFracB > nThr)
         {
-            DuelEnd(nDuelId, sUuidB, sUuidA, "Pierwsza krew.", FALSE);
+            DuelEnd(nDuelId, sUuidB, sUuidA, "First blood.", FALSE);
             return;
         }
         if(nFracB <= nThr && nFracA > nThr)
         {
-            DuelEnd(nDuelId, sUuidA, sUuidB, "Pierwsza krew.", FALSE);
+            DuelEnd(nDuelId, sUuidA, sUuidB, "First blood.", FALSE);
             return;
         }
         if(nFracA <= nThr && nFracB <= nThr)
         {
             string sWin = (nFracA >= nFracB) ? sUuidA : sUuidB;
             string sLos = (nFracA >= nFracB) ? sUuidB : sUuidA;
-            DuelEnd(nDuelId, sWin, sLos, "Obaj zranieni — wygrywa silniejszy.", FALSE);
+            DuelEnd(nDuelId, sWin, sLos, "Both wounded — the stronger prevails.", FALSE);
             return;
         }
     }
@@ -398,20 +398,20 @@ void DuelTick(int nDuelId)
     int nTkA = NuiFindWindow(oA, DUEL_WIN_HUD);
     int nTkB = NuiFindWindow(oB, DUEL_WIN_HUD);
     if(nTkA != 0) NuiSetBind(oA, nTkA, DUEL_BIND_HUD_BOUNDS,
-        JsonString(nOobA > 0 ? "Wracaj na arene! " + IntToString(nOobA) + "/"
+        JsonString(nOobA > 0 ? "Return to the arena! " + IntToString(nOobA) + "/"
             + IntToString(FloatToInt(DUEL_OUT_OF_BOUNDS_TIME)) : ""));
     if(nTkB != 0) NuiSetBind(oB, nTkB, DUEL_BIND_HUD_BOUNDS,
-        JsonString(nOobB > 0 ? "Wracaj na arene! " + IntToString(nOobB) + "/"
+        JsonString(nOobB > 0 ? "Return to the arena! " + IntToString(nOobB) + "/"
             + IntToString(FloatToInt(DUEL_OUT_OF_BOUNDS_TIME)) : ""));
 
     if(IntToFloat(nOobA) >= DUEL_OUT_OF_BOUNDS_TIME)
     {
-        DuelEnd(nDuelId, sUuidB, sUuidA, "Ucieczka z areny.", FALSE);
+        DuelEnd(nDuelId, sUuidB, sUuidA, "Fled the arena.", FALSE);
         return;
     }
     if(IntToFloat(nOobB) >= DUEL_OUT_OF_BOUNDS_TIME)
     {
-        DuelEnd(nDuelId, sUuidA, sUuidB, "Ucieczka z areny.", FALSE);
+        DuelEnd(nDuelId, sUuidA, sUuidB, "Fled the arena.", FALSE);
         return;
     }
 
@@ -437,7 +437,7 @@ void DuelYield(object oPC)
     if(sSelf != sUuidA && sSelf != sUuidB) return;
 
     string sWin = (sSelf == sUuidA) ? sUuidB : sUuidA;
-    DuelEnd(nDuelId, sWin, sSelf, "Poddanie sie.", FALSE);
+    DuelEnd(nDuelId, sWin, sSelf, "Yielded.", FALSE);
 }
 
 // ----------------------------------------------------------------
@@ -477,7 +477,7 @@ void DuelEnd(int nDuelId, string sWinnerUuid, string sLoserUuid, string sNote, i
     DuelHealAndCleanup(oA);
     DuelHealAndCleanup(oB);
 
-    int bForfeit = (sNote == "Poddanie sie." || sNote == "Ucieczka z areny.");
+    int bForfeit = (sNote == "Yielded." || sNote == "Fled the arena.");
 
     string sWinName = (sWinnerUuid == sUuidA) ? sNameA : sNameB;
     string sLosName = (sLoserUuid  == sUuidA) ? sNameA : sNameB;
@@ -499,8 +499,8 @@ void DuelEnd(int nDuelId, string sWinnerUuid, string sLoserUuid, string sNote, i
             if(GetIsObjectValid(oWin))
             {
                 GiveGoldToCreature(oWin, nStake * 2);
-                SendMessageToPC(oWin, "[Pojedynek] Stawka " + IntToString(nStake * 2)
-                    + " zlota do twojej sakiewki.");
+                SendMessageToPC(oWin, "[Duel] Stake of " + IntToString(nStake * 2)
+                    + " gold added to your purse.");
             }
         }
     }
@@ -513,7 +513,7 @@ void DuelEnd(int nDuelId, string sWinnerUuid, string sLoserUuid, string sNote, i
 
     string sMsg = sNote;
     if(sWinnerUuid != "")
-        sMsg += " Zwyciezca: " + sWinName + ".";
+        sMsg += " Victor: " + sWinName + ".";
     DuelBroadcast(sMsg, oA, oB);
 
     object oRefresh = GetFirstPC();
